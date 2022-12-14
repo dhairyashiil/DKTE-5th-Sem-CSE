@@ -1,0 +1,149 @@
+--emp works dept schema
+
+CREATE TABLE EMP(
+
+EID NUMBER(5),
+
+ENAME VARCHAR2(20),
+
+AGE NUMBER(2),
+
+SALARY REAL
+
+);
+
+
+
+CREATE TABLE WORKS(
+
+EID NUMBER (5),
+
+DID NUMBER(5),
+
+PCTTIME NUMBER(5)
+
+);
+
+
+
+CREATE TABLE DEPT(
+
+DID NUMBER(5),
+
+BUDGET REAL,
+
+MANAGERID NUMBER(5)
+
+);
+
+
+
+-- 1. Print the names and ages of each employee who works in both the Hardware department and
+
+-- the Software department.
+
+SELECT E.ENAME, E.AGE
+
+FROM EMP E, WORKS W1, WORKS W2, DEPT D1, DEPT D2
+
+WHERE E.EID = W1.EID AND W1.DID = D1.DID AND D1.DNAME = ‘HARDWARE’ AND
+
+E.EID = W2.EID AND W2.DID = D2.DID AND D2.DNAME = ‘SOFTWARE’
+
+
+
+-- 2. For each department with more than 20 full-time-equivalent employees (i.e., where the parttime and full-time employees add up to at least that many full-time employees), print the
+
+-- didtogether with the number of employees that work in that department.
+
+SELECT W.DID, COUNT (W.EID)
+
+FROM WORKS W
+
+GROUP BY W.DID
+
+HAVING 2000 < ( SELECT SUM (W1.PCT TIME)
+
+FROM WORKS W1
+
+WHERE W1.DID = W.DID )
+
+
+
+-- 3. Print the name of each employee whose salary exceeds the budget of all of the departments that
+
+-- he or she works in.
+
+SELECT E.ENAME
+
+FROM EMP E
+
+WHERE E.SALARY > ALL (SELECT D.BUDGET
+
+FROM DEPT D, WORKS W
+
+WHERE E.EID = W.EID AND D.DID = W.DID)
+
+
+
+-- 4. Find the managerids of managers who manage only departments with budgets greater than
+
+-- $1,000,000.
+
+SELECT DISTINCT D.MANAGERID
+
+FROM DEPT D
+
+WHERE 1000000 < ALL (SELECT D2.BUDGET
+
+FROM DEPT D2
+
+WHERE D2.MANAGERID = D.MANAGERID )
+
+
+
+-- 5. Find the enames of managers who manage the departments with the largest budget.
+
+SELECT E.ENAME
+
+FROM EMP E
+
+WHERE E.EID IN (SELECT D.MANAGERID
+
+FROM DEPT D
+
+WHERE D.BUDGET = (SELECT MAX (D2.BUDGET)
+
+FROM DEPT D2))
+
+
+
+-- 6. If a manager manages more than one department, he or she controls the sum of all the budgets
+
+-- for those departments. Find the managerids of managers who control more than $5,000,000.
+
+SELECT D.MANAGERID
+
+FROM DEPT D
+
+WHERE 5000000 < (SELECT SUM (D2.BUDGET)
+
+FROM DEPT D2
+
+WHERE D2.MANAGERID = D.MANAGERID )
+
+
+
+-- 7. Find the managerids of managers who control the largest amount.
+
+SELECT DISTINCT TEMPD.MANAGERID
+
+FROM (SELECT DISTINCT D.MANAGERID, SUM (D.BUDGET) AS TEMPBUDGET
+
+FROM DEPT D
+
+GROUP BY D.MANAGERID ) AS TEMPD
+
+WHERE TEMPD.TEMPBUDGET = (SELECT MAX (TEMPD.TEMPBUDGET)
+
+FROM TEMPD)

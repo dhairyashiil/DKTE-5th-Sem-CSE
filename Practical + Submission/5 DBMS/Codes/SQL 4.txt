@@ -1,0 +1,230 @@
+4. The following relations keep track of airline flight information:
+
+CREATE TABLE FLIGHTS1(FLNO NUMBER PRIMARY KEY,FRM VARCHAR2(50),TOO VARCHAR2(50),DISTANCE NUMBER,DEPARTS VARCHAR2(50),ARRIVES VARCHAR2(50),PRICE NUMBER)
+CREATE TABLE AIRCRAFT(AID NUMBER PRIMARY KEY,ANAME VARCHAR2(50),CRANGE NUMBER)
+CREATE TABLE EMPLOY(EID NUMBER PRIMARY KEY,ENAME VARCHAR2(50),SALARY NUMBER)
+CREATE TABLE CERTIFIED(EID NUMBER REFERENCES EMPLOY(EID),AID NUMBER REFERENCES AIRCRAFT(AID))
+
+INSERT INTO  FLIGHTS1 VALUES(1,'Bangalore','Mangalore',360,'10:45:00','12:00:00',10000)
+INSERT INTO  FLIGHTS1 VALUES(2,'Bangalore','Delhi',5000,'12:15:00','04:30:00',25000)
+INSERT INTO  FLIGHTS1 VALUES(3,'Bangalore','Mumbai',3500,'02:15:00','05:25:00',30000)
+INSERT INTO  FLIGHTS1 VALUES(4,'Delhi','Mumbai',4500,'10:15:00','12:05:00',35000)
+INSERT INTO  FLIGHTS1 VALUES(5,'Delhi','Frankfurt',18000,'07:15:00','05:30:00',90000)
+INSERT INTO  FLIGHTS1 VALUES(6,'Bangalore','Frankfurt',19500,'10:00:00','07:45:00',95000)
+INSERT INTO  FLIGHTS1 VALUES(7,'Bangalore','Frankfurt',17000,'12:00:00','06:30:00',99000)
+------------------------------------------------------------------------
+FLNO    FRM             TOO        DISTANCE DEPARTS     ARRIVES         PRICE
+1   Bangalore   Mangalore   360 10:45:00    12:00:00    10000
+2   Bangalore   Delhi           5000    12:15:00    04:30:00    25000
+3   Bangalore   Mumbai          3500    02:15:00    05:25:00    30000
+4   Delhi           Mumbai      4500    10:15:00    12:05:00    35000
+5   Delhi           Frankfurt   18000   07:15:00    05:30:00    90000
+6   Bangalore   Frankfurt   19500   10:00:00    07:45:00    95000
+7   Bangalore   Frankfurt   17000   12:00:00    06:30:00    99000
+-------------------------------------------------------------------------
+
+
+INSERT INTO AIRCRAFT VALUES(123,'Airbus',1000)
+INSERT INTO AIRCRAFT VALUES(302,'Boeing',5000)
+INSERT INTO AIRCRAFT VALUES(306,'Jet01',5000)
+INSERT INTO AIRCRAFT VALUES(378,'Airbus380',8000)
+INSERT INTO AIRCRAFT VALUES(456,'Aircraft',500)
+INSERT INTO AIRCRAFT VALUES(789,'Aircraft02',800)
+INSERT INTO AIRCRAFT VALUES(951,'Aircraft03',1000)
+------------------------------------
+AID ANAME           CRANGE
+123 Airbus          1000
+302 Boeing      5000
+306 Jet01           5000
+378 Airbus380   8000
+456 Aircraft    500
+789 Aircraft02  800
+951 Aircraft03  1000
+------------------------------------
+
+INSERT INTO EMPLOY VALUES(1,'Ajay',30000)
+INSERT INTO EMPLOY VALUES(2,'Ajith',85000)        
+INSERT INTO EMPLOY VALUES(3,'Arnab',50000)        
+INSERT INTO EMPLOY VALUES(4,'Harry',45000)        
+INSERT INTO EMPLOY VALUES(5,'Ron',90000)       
+INSERT INTO EMPLOY VALUES(6,'Josh',75000)       
+INSERT INTO EMPLOY VALUES(7,'Ram',100000)
+--------------------------------------
+EID ENAME   SALARY
+1   Ajay    30000
+2   Ajith   85000
+3   Arnab   50000
+4   Harry   45000
+5   Ron 90000
+6   Josh    75000
+7   Ram 100000
+----------------------------------------
+
+INSERT INTO CERTIFIED VALUES(1,123)
+INSERT INTO CERTIFIED VALUES(2,123)
+INSERT INTO CERTIFIED VALUES(1,302)
+INSERT INTO CERTIFIED VALUES(5,302)
+INSERT INTO CERTIFIED VALUES(7,302)
+INSERT INTO CERTIFIED VALUES(1,306)
+INSERT INTO CERTIFIED VALUES(2,306)
+INSERT INTO CERTIFIED VALUES(1,378)
+INSERT INTO CERTIFIED VALUES(2,378)
+INSERT INTO CERTIFIED VALUES(4,378)
+INSERT INTO CERTIFIED VALUES(6,456)
+INSERT INTO CERTIFIED VALUES(3,456)
+INSERT INTO CERTIFIED VALUES(5,789)
+INSERT INTO CERTIFIED VALUES(6,789)
+INSERT INTO CERTIFIED VALUES(3,951)
+INSERT INTO CERTIFIED VALUES(1,951)
+INSERT INTO CERTIFIED VALUES(1,789) 
+--------------------------------------
+EID AID
+1   123
+2   123
+1   302
+5   302
+7   302
+1   306
+2   306
+1   378
+2   378
+4   378
+6   456
+3   456
+5   789
+6   789
+3   951
+1   951
+1   789
+----------------------------------------
+
+
+1. Find the names of aircraft such that all pilots certified to operate them earn more than
+80,000.
+
+SELECT ANAME FROM AIRCRAFT WHERE AID IN
+(SELECT AID FROM CERTIFIED WHERE EID IN
+(SELECT EID FROM EMPLOY WHERE SALARY>80000))
+
+ANAME
+Airbus
+Boeing
+Jet01
+Airbus380
+Aircraft02
+************************
+
+2. For each pilot who is certified for more than three aircraft, find the eid and the maximum
+Cruisingrange of the aircraft that he (or she) is certified for.
+
+SELECT C.EID, MAX(A.CRANGE) FROM CERTIFIED C,AIRCRAFT A WHERE C.AID =A.AID GROUP BY C.EID HAVING COUNT(C.AID)>3
+
+EID MAX(A.CRANGE)
+1   8000
+************************
+
+3. Find the names of pilots whose salary is less than the price of the cheapest route fromLos Angeles
+to Honolulu.
+
+SELECT ENAME FROM EMPLOY WHERE SALARY<
+(SELECT MIN(PRICE) FROM FLIGHTS1 WHERE FRM='Bangalore' AND TOO='Frankfurt')
+
+ENAME
+Ajay
+Ajith
+Arnab
+Harry
+Ron
+Josh
+**************************
+
+4. For all aircraft with cruisingrange over 1,000 miles, find the name of the aircraft and theaverage
+salary of all pilots certified for this aircraft.
+
+SELECT A.ANAME,AVG(E.SALARY) FROM AIRCRAFT A,CERTIFIED C ,EMPLOY E WHERE A.AID=C.AID AND C.EID=E.EID AND A.CRANGE>1000 GROUP BY A.AID,A.ANAME
+
+ANAME   AVG(E.SALARY)
+Jet01   57500
+Boeing  73333.3333333333333333333333333333333333
+Airbus380   53333.3333333333333333333333333333333333
+**************************
+
+5. Find the names of pilots certified for some Boeing aircraft.
+
+SELECT ENAME FROM EMPLOY WHERE EID IN
+(SELECT EID FROM CERTIFIED WHERE AID IN
+(SELECT AID FROM AIRCRAFT WHERE ANAME='Boeing'))
+
+ENAME
+Ajay
+Ron
+Ram
+************************
+
+6. Find the aids of all aircraft that can be used on routes from Los Angeles to Chicago
+
+SELECT AID FROM AIRCRAFT WHERE CRANGE>
+(SELECT MIN(DISTANCE) FROM FLIGHT WHERE FRM='Bangalore' AND TOO='Mumbai')
+
+AID
+302
+306
+378
+**************************
+
+7. Identify the flights that can be piloted by every pilot who makes more than $100,000.
+(Hint: The pilot must be certified for at least one plane with a sufficiently large cruising
+range.)
+
+SELECT DISTINCT F.frm, F.too
+FROM Flight F
+WHERE NOT EXISTS ( SELECT *
+ FROM Employ E
+ WHERE E.salary > 100000
+ AND
+ NOT EXISTS (SELECT *
+ FROM Aircraft A, Certified C
+ WHERE A.crange > F.distance AND
+ E.eid = C.eid AND A.aid = C.aid) ) 
+
+FRM TOO
+Bangalore   Delhi
+Bangalore   Mangalore
+Bangalore   Frankfurt
+Delhi   Frankfurt
+Bangalore   Mumbai
+Delhi   Mumbai
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+8. Print the enames of pilots who can operate planes with cruisingrange greater than 3,000 miles, but
+are not certified on any Boeing aircraft
+
+
+SELECT ENAME FROM EMPLOY WHERE EID IN
+(SELECT EID FROM CERTIFIED WHERE AID IN
+(SELECT AID FROM AIRCRAFT WHERE CRANGE>1000 AND ANAME<>'Boeing'))
+
+ENAME
+Ajay
+Ajith
+Harry
+****************************
+
+9. A customer wants to travel from Madison to New York with no more than two changesof flight. List
+the choice of departure times from Madison if the customer wants to arrivein New York by 6 p.m.
+
+10. Compute the difference between the average salary of a pilot and the average salary ofall
+employees (including pilots).
+
+11. Print the name and salary of every non pilot whose salary is more than the average salary for pilots.
+
+SELECT E.ename, E.salary
+FROM EmploY E
+WHERE E.eid NOT IN ( SELECT DISTINCT C.eid
+ FROM Certified C )
+AND E.salary > ( SELECT AVG (E1.salary)
+ FROM Employ E1
+ WHERE E1.eid IN
+ ( SELECT DISTINCT C1.eid
+ FROM Certified C1 ) ) 
+*******************************

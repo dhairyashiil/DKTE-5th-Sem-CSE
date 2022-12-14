@@ -1,0 +1,891 @@
+1 Creating and Accessing NumPy Arrays
+
+import numpy as np
+a=np.array([1,2,3])
+print(type(a))
+print(a.shape)
+
+
+print(a[0],a[1],a[2],sep="\n")
+a[0]=5
+print(a)
+
+b=np.array([[1,2,3],[4,5,6]])
+print(b.shape)
+print(b[0,0],b[0,1],b[1,0],b[1,1])
+print(b)
+
+#NumPy Function to Create Arrays
+a=np.zeros((2,2)) print(a)
+
+b=np.ones((1,2))
+print(b)
+
+c=np.full((2,2),7)
+print(c)
+
+d=np.eye(3)
+print(d)
+
+e=np.random.random((2,2))
+print(e)
+
+f=np.random.randint((2,2),100)
+print(f)
+
+#Creating Arrays from Sub-classes
+np.array(np.mat('1 2; 3 4'),subok=False)
+#np.array(np.mat('1 2; 3 4'))
+
+np.array(np.mat('1 2; 3 4'),subok=True)
+
+#Array Indexing
+a=np.arange(10)
+print(a)
+print(a[2:5])
+
+b=np.array([[1,2,3],[4,5,6],[7,8,9]])
+print(b)
+print(b[1:])
+
+a=np.array([[1,2,3],[4,5,6],[7,8,9]])
+print(a[...,1])
+print(a[...,1:])
+print(a[1,...])
+print(a[1:,...])
+
+#Integer Indexing
+a=np.array([[1,2],[3,4],[5,6]])
+b=a[[0,1,2],[0,1,0]]
+print(a)
+print(b)
+
+#Boolean Indexing
+a=np.array([[0,1,2],[3,4,5],[6,7,8],[9,10,11]])
+print(a[a>5])
+
+===================================================================
+
+2.# Lambda functions in Python
+# Program to show the use of lambda functions
+double = lambda x: x * 2
+print(double(5))
+
+adder = lambda x, y: x + y
+print (adder (1, 2))
+
+x="lambda function"
+(lambda x : print(x))(x)
+
+# Program to filter out only the even items from a list
+my_list = [1, 5, 4, 6, 8, 11, 3, 12]
+
+new_list = list(filter(lambda x: (x%2 == 0) , my_list))
+
+print(new_list)
+
+# Program to double each item in a list using map()
+
+my_list = [1, 5, 4, 6, 8, 11, 3, 12]
+
+new_list = list(map(lambda x: x * 2 , my_list))
+
+print(new_list)
+
+# Program to double each item in a list using reduce()
+from functools import reduce
+seq = [1,2,3,4,5]
+product = reduce (lambda x, y: x*y, seq)
+print(product)
+
+==============================================================
+
+
+3.Write a Python program to import data from Comma Separated Files (CSV) file, clean data, and export data in CSV file.
+  import csv
+  with open('Student_scores.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["Name", "Score 1", "Score 2"])
+    writer.writerow(["Alex",62,80])
+    writer.writerow(["Brad",45,56])
+    writer.writerow(["Joey",85,98])
+	
+	  import csv
+  with open('Student_scores.csv', 'r',) as file:
+    reader = csv.reader(file, delimiter = '\t')
+    for row in reader:
+      print(row)
+	  
+	  import pandas as pd
+	  # Importing and viewing the first 5 rows
+
+dframe = pd.read_csv("insurance.csv")
+dframe.head()
+
+# Importing and viewing the first 5 rows
+
+dframe = pd.read_table('insurance.csv', sep=',')
+dframe.head()
+
+dframe.duplicated()
+
+dframe.drop_duplicates()
+
+dframe.fillna(0)
+
+dframe.dropna()
+
+dframe.to_csv("dframe.csv", sep='?')
+
+=============================================================
+
+4.Write a program to visualize data using data visualization library seaborn.
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+%matplotlib inline
+
+sns.get_dataset_names()
+
+tips = sns.load_dataset("tips")
+tips.to_csv('tips.csv')
+#sns.relplot(x="total_bill", y="tip", hue="smoker",data=tips);
+
+tips
+
+sns.relplot(x="total_bill", y="tip",data=tips);
+
+sns.set()
+# same plotting code as in Matplotlib can produce better visualization!
+# Create some data
+rng = np.random.RandomState(0)
+x = np.linspace(0, 10, 500)
+y = np.cumsum(rng.randn(500, 6), 0)
+plt.plot(x, y)
+plt.legend('ABCDEF', ncol=2, loc='upper left');
+
+sns.distplot(tips['total_bill'])
+plt.show()
+
+sns.distplot(tips['total_bill'], kde=False)
+plt.show()
+
+sns.distplot(tips['total_bill'], hist=False)
+plt.show()
+
+sns.jointplot(x="total_bill", y="tip", data=tips)
+plt.show()
+
+sns.scatterplot(x="total_bill", y="tip", data=tips)
+plt.show()
+
+sns.set_style("ticks")
+sns.pairplot(tips)
+
+sns.stripplot(x="day", y="total_bill", data=tips)
+plt.show()
+
+sns.boxplot(x=tips["total_bill"])
+plt.show()
+
+sns.violinplot(x=tips["total_bill"])
+plt.show()
+
+sns.barplot(x="day", y="total_bill", data=tips)
+plt.show()
+
+sns.pointplot(x="time", y="total_bill", data=tips)
+plt.show()
+
+sns.regplot(x="total_bill", y="tip", data=tips)
+plt.show()
+
+
+============================================================
+
+
+5.Write a program to perform Exploratory Data Analysis (EDA) on data set
+
+import pandas as pd
+from sklearn.datasets import load_boston
+ 
+boston = load_boston()
+x = boston.data
+y = boston.target
+columns = boston.feature_names
+# creating dataframes
+boston_df = pd.DataFrame(boston.data)
+boston_df.columns = columns
+boston_df.describe()
+
+boston_df.shape
+
+boston_df=boston_df.dropna()
+
+boston_df.shape
+#code indicates that there are no null values in our data set
+
+boston_df['AGE']=boston_df['AGE'].fillna(30)
+
+boston_df.shape
+
+import seaborn as sns
+sns.boxplot(x=boston_df['DIS'])
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(16,8))
+ax.scatter(boston_df['INDUS'] , boston_df['TAX'])
+ax.set_xlabel('proportion of non-retail business acre per town')
+ax.set_ylabel('full-value property-tax per $10000')
+plt.show()
+
+from scipy import stats
+import numpy as np
+
+z=np.abs(stats.zscore(boston_df))
+print(z)
+
+boston_df_outlier_Zscore=boston_df[(z<3).all(axis=1)]
+boston_df_outlier_Zscore.shape
+#We can see from that the shape changes, which indicates that our dataset has some outliers.
+
+Q1=boston_df.quantile(0.25)
+Q3=boston_df.quantile(0.75)
+IQR=Q3-Q1
+print(IQR)
+
+boston_df_outlier_IQR=boston_df[~((boston_df<(Q1-1.5*IQR))|(boston_df>(Q3+1.5*IQR))).any(axis=1)]
+boston_df_outlier_IQR.shape
+#Once we have IQR scores below code will remove all the outliers in our dataset
+
+plt.figure(figsize=(4,3))
+plt.hist(boston.target)
+plt.xlabel('price($1000s)')
+plt.ylabel('count')
+plt.tight_layout
+#histogram
+
+correlation_matrix=boston_df.corr().round(2)
+sns.heatmap(data=correlation_matrix, annot=True)
+#Heatmap
+
+
+============================================================
+
+
+5.Write a program to perform Exploratory Data Analysis (EDA) on data set
+
+To Download data set : https://www.kaggle.com/CooperUnion/cardataset
+To Download complete code : https://github.com/Tanu-N-Prabhu/Python/blob/master/Exploratory_data_Analysis.ipynb
+
+# Importing required libraries.
+import pandas as pd
+import numpy as np
+import seaborn as sns #visualisation
+import matplotlib.pyplot as plt #visualisation
+%matplotlib inline 
+sns.set(color_codes=True)
+
+df = pd.read_csv(“data.csv”)
+# To display the top 5 rows
+df.head(5)
+
+# To display the bottom 5 rows
+df.tail(5)
+
+# Checking the data type
+df.dtypes
+
+# Dropping irrelevant columns
+df = df.drop([‘Engine Fuel Type’, ‘Market Category’, ‘Vehicle Style’, ‘Popularity’, ‘Number of Doors’, ‘Vehicle Size’], axis=1)
+df.head(5)
+
+# Renaming the column names
+df = df.rename(columns={“Engine HP”: “HP”, “Engine Cylinders”: “Cylinders”, “Transmission Type”: “Transmission”, “Driven_Wheels”: “Drive Mode”,”highway MPG”: “MPG-H”, “city mpg”: “MPG-C”, “MSRP”: “Price” })
+df.head(5)
+
+# Total number of rows and columns
+df.shape
+(11914, 10)
+# Rows containing duplicate data
+duplicate_rows_df = df[df.duplicated()]
+print(“number of duplicate rows: “, duplicate_rows_df.shape)
+number of duplicate rows:  (989, 10)
+
+# Used to count the number of rows before removing the data
+df.count() 
+Make            11914 
+Model           11914 
+Year            11914 
+HP              11845 
+Cylinders       11884 
+Transmission    11914 
+Drive Mode      11914 
+MPG-H           11914 
+MPG-C           11914 
+Price           11914 
+dtype: int64
+
+# Dropping the duplicates 
+df = df.drop_duplicates()
+df.head(5)
+
+# Counting the number of rows after removing duplicates.
+df.count()
+Make            10925 
+Model           10925 
+Year            10925 
+HP              10856 
+Cylinders       10895 
+Transmission    10925 
+Drive Mode      10925 
+MPG-H           10925 
+MPG-C           10925 
+Price           10925 
+dtype: int64
+
+# Finding the null values.
+print(df.isnull().sum())
+Make             0 
+Model            0 
+Year             0 
+HP              69 
+Cylinders       30 
+Transmission     0 
+Drive Mode       0 
+MPG-H            0 
+MPG-C            0 
+Price            0 
+dtype: int64
+
+# Dropping the missing values.
+df = df.dropna() 
+df.count()
+Make            10827 
+Model           10827 
+Year            10827 
+HP              10827 
+Cylinders       10827 
+Transmission    10827 
+Drive Mode      10827 
+MPG-H           10827 
+MPG-C           10827 
+Price           10827 
+dtype: int64
+
+# After dropping the values
+print(df.isnull().sum()) 
+Make            0 
+Model           0 
+Year            0 
+HP              0 
+Cylinders       0 
+Transmission    0 
+Drive Mode      0 
+MPG-H           0 
+MPG-C           0 
+Price           0 
+dtype: int64
+
+sns.boxplot(x=df[‘Price’])
+
+sns.boxplot(x=df[‘HP’])
+
+sns.boxplot(x=df['Cylinders'])
+
+Q1 = df.quantile(0.25)
+Q3 = df.quantile(0.75)
+IQR = Q3 — Q1
+print(IQR)
+Year             9.0 
+HP             130.0 
+Cylinders        2.0 
+MPG-H            8.0 
+MPG-C            6.0 
+Price        21327.5 
+dtype: float64
+
+df = df[~((df < (Q1–1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
+df.shape
+(9191, 10)
+
+# Plotting a Histogram
+df.Make.value_counts().nlargest(40).plot(kind=’bar’, figsize=(10,5))
+plt.title(“Number of cars by make”)
+plt.ylabel(‘Number of cars’)
+plt.xlabel(‘Make’);
+
+# Finding the relations between the variables.
+plt.figure(figsize=(20,10))
+c= df.corr()
+sns.heatmap(c,cmap=”BrBG”,annot=True)
+c
+
+# Plotting a scatter plot
+fig, ax = plt.subplots(figsize=(10,6))
+ax.scatter(df[‘HP’], df[‘Price’])
+ax.set_xlabel(‘HP’)
+ax.set_ylabel(‘Price’)
+plt.show()
+
+
+
+
+===========================================================
+
+
+6. Implementation of dataframe merging using python.
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame( 
+
+   {'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (left) 
+
+print (right )
+
+#Merge Two DataFrames on a Key 
+
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame({ 
+
+'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (pd.merge(left,right,on='id')) 
+
+#Merge Two DataFrames on Multiple Keys 
+
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame({ 
+
+'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (pd.merge(left,right,on=['id','subject_id']) )
+
+#Left Join 
+
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (pd.merge(left, right, on='subject_id', how='left') )
+
+#Right Join 
+
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (pd.merge(left, right, on='subject_id', how='right') )
+
+#Outer Join 
+
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (pd.merge(left, right, how='outer', on='subject_id')) 
+
+#Inner Join 
+
+import pandas as pd 
+
+left = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung'], 
+
+   'subject_id':['sub1','sub2','sub4','sub6','sub5']}) 
+
+right = pd.DataFrame({ 
+
+   'id':[1,2,3,4,5], 
+
+   'Name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'], 
+
+   'subject_id':['sub2','sub4','sub3','sub6','sub5']}) 
+
+print (pd.merge(left, right, on='subject_id', how='inner')) 
+
+
+=======================================================================
+
+
+7.Write a Python program to perform data analysis using Groupby.
+
+import pandas as pd 
+
+ipl_data = {'Team': ['Riders', 'Riders', 'Devils', 'Devils', 'Kings',    'kings', 'Kings', 'Kings', 'Riders', 'Royals', 'Royals', 'Riders'], 
+
+   'Rank': [1, 2, 2, 3, 3,4 ,1 ,1,2 , 4,1,2], 
+
+   'Year':  [2014,2015,2014,2015,2014,2015,2016,2017,2016,2014,2015,2017], 
+
+   'Points':[876,789,863,673,741,812,756,788,694,701,804,690]} 
+
+df = pd.DataFrame(ipl_data) 
+print (df) 
+
+
+
+#grouping objects can be applied to the DataFrame object 
+
+print (df.groupby('Team')) 
+
+ 
+
+#View Groups 
+
+print (df.groupby('Team').groups )
+
+ 
+
+#Group by with multiple columns – 
+
+print (df.groupby(['Team','Year']).groups) 
+
+ 
+
+#Iterating through Groups 
+
+#With the groupby object in hand, we can iterate through the object similar to itertools.obj. 
+
+grouped = df.groupby('Year') 
+
+for name,group in grouped: 
+
+   print (name) 
+
+   print (group )
+
+
+#Select a Group 
+
+#Using the get_group() method, we can select a single group. 
+
+grouped = df.groupby('Year') 
+
+print (grouped.get_group(2014)) 
+
+ 
+
+#Aggregations 
+
+#An aggregated function returns a single aggregated value for each group. Once the group by object is created, several aggregation operations can be performed on the grouped data 
+
+#Aggregation via the aggregate or equivalent agg method – 
+import numpy as np
+
+grouped = df.groupby('Year') 
+
+print (grouped['Points'].agg(np.mean) )
+
+ 
+
+#see the size of each group is by applying the size() function – 
+
+grouped = df.groupby('Team') 
+
+print (grouped.agg(np.size) )
+
+ 
+#Applying Multiple Aggregation Functions at Once 
+
+#With grouped Series, you can also pass a list or dict of functions to do aggregation with, and generate DataFrame as output 
+
+grouped = df.groupby('Team') 
+
+print (grouped['Points'].agg([np.sum, np.mean, np.std]))
+ 
+
+#Transformations 
+
+#Transformation on a group or a column returns an object that is indexed the same size of that is being grouped. Thus, the transform should return a result that is the same size as that of a group chunk 
+
+grouped = df.groupby('Team') 
+
+score = lambda x: (x - x.mean()) / x.std()*10 
+
+print (grouped.transform(score) )
+
+#Filtration 
+
+#Filtration filters the data on a defined criteria and returns the subset of data. The filter() function is used to filter the data. 
+
+Print( df.groupby('Team').filter(lambda x: len(x) >= 3)) 
+
+
+=========================================================================================================================
+8.Write a Python program to perform table pivoting and Data/time functionality
+from datetime import date
+ 
+# date object of today's date
+today = date.today()
+ 
+print("Current year:", today.year)
+print("Current month:", today.month)
+print("Current day:", today.day)
+
+from datetime import date
+ 
+# calling the today
+# function of date class
+today = date.today()
+ 
+print("Today's date is", today)
+
+from datetime import time
+ 
+Time = time(11, 34, 56)
+ 
+print("hour =", Time.hour)
+print("minute =", Time.minute)
+print("second =", Time.second)
+print("microsecond =", Time.microsecond)
+
+from datetime import datetime
+ 
+# Initializing constructor
+a = datetime(1999, 12, 12)
+print(a)
+ 
+# Initializing constructor
+# with time parameters as well
+a = datetime(1999, 12, 12, 12, 12, 12, 342380)
+print(a)
+
+from datetime import datetime
+ 
+# Calling now() function
+today = datetime.now()
+ 
+print("Current date and time is", today)
+
+========================================================================================================================
+
+
+9.Write python program to demonstrate statistical testing
+
+from scipy.stats import ttest_1samp
+import numpy as np
+
+ages = np.genfromtxt("ages.csv")
+print(ages)
+
+mu = np.mean(ages)
+print(mu)
+
+print("Age 30", ttest_1samp(ages,30))
+print("Age 3", ttest_1samp(ages,3))
+
+from scipy.stats import ttest_ind
+import numpy as np
+
+week1 = np.genfromtxt("week1.csv",  delimiter=",")
+week2 = np.genfromtxt("week2.csv",  delimiter=",")
+
+week1_mean = week1.mean()
+week2_mean = week2.mean()
+
+print("Week 1 Sample Mean:", week1_mean)
+print("Week 2 Sample Mean:", week2_mean)
+
+pval = ttest_ind(week1,week2)
+print(pval)
+
+if pval[1] < 0.05:
+    print("pval is ", pval[1], "Null Hypothesis Rejected - samples are statistically different")
+else:
+    print("pval is ", pval[1], "Null Hypothesis Accepted - samples are NOT statistically different")
+	
+	
+=========================================================================================================
+
+
+10.Write a program to build predictive model using classification techniques
+
+import pandas as pd
+import numpy as np
+import seaborn as sns 
+%matplotlib inline
+
+df= sns.load_dataset('titanic')
+
+df
+
+df.isnull().sum()
+
+cols_to_drop = ['who','adult_male','deck','embark_town','alive','alone']
+df = df.drop(cols_to_drop, axis=1)
+
+df
+
+sns.heatmap(df.isnull())
+
+# replace missing values with interpolated values 
+df['age'] = df['age'].interpolate()
+
+sns.heatmap(df.isnull())
+
+df.info()
+
+cols_to_drop = ['class']
+df = df.drop(cols_to_drop, axis=1)
+df.info()
+
+# conver categorical columns to binary 
+# to do that create dummy columns for the you want to convert concatenate with the dataframe, then drop existinc columns
+embarkedcolumndummy = pd.get_dummies(df['embarked'])
+sexcolumndummy = pd.get_dummies(df['sex'])
+
+df = pd.concat((df,embarkedcolumndummy,sexcolumndummy),axis=1)
+
+df.head(10)
+
+# drop the redundant columns thus converted
+df = df.drop(['sex','embarked'],axis=1)
+df.head(10)
+
+#seperate dataframe int x and y values 
+x = df.values
+y = df['survived'].values
+
+# delete survived colums from x 
+x= np.delete(x,0,axis=1)
+df
+
+#Split the dataset
+from sklearn.model_selection import train_test_split
+x_train, x_test,y_train, y_test = train_test_split(x,y,test_size=0.3,random_state=0)
+
+# Buid Decision tree classifier
+from sklearn import tree 
+df_clf =tree.DecisionTreeClassifier(max_depth=5) #build
+df_clf.fit(x_train, y_train) #train
+
+df_clf.score(x_test,y_test) # make prediction
+y_pred = df_clf.predict(x_test)
+df_clf.score(x_test,y_test)
+
+from sklearn.metrics import confusion_matrix
+confusion_matrix(y_test,y_pred)
+
+# build randomForest classifier
+from sklearn import ensemble
+rf_clf = ensemble.RandomForestClassifier(n_estimators=100)
+rf_clf.fit(x_train, y_train)
+rf_clf.score(x_test,y_test)
+
+# build gradient boosting classifier
+gb_clf = ensemble.GradientBoostingClassifier()
+gb_clf.fit(x_train, y_train)
+gb_clf.score(x_test,y_test)
+
+# naive bayes classifier 
+from sklearn.naive_bayes import GaussianNB
+nb_clf = GaussianNB()
+nb_clf.fit(x_train, y_train)
+nb_clf.score(x_test,y_test)
+
+#K-nearest neighbor classifier
+from sklearn.neighbors import KNeighborsClassifier
+knn_clf = KNeighborsClassifier(n_neighbors=3)
+knn_clf.fit(x_train, y_train)
+knn_clf.score(x_test,y_test)
+
+from sklearn.linear_model import LogisticRegression
+lr_clf = LogisticRegression()
+lr_clf.fit(x_train, y_train)
+lr_clf.score(x_test,y_test)
+
+
+# SVM classifier 
+from sklearn.svm import SVC
+sv_clf = SVC(probability = True)
+sv_clf.fit(x_train, y_train)
+sv_clf.score(x_test,y_test)

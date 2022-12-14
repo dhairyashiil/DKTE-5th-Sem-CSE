@@ -1,0 +1,46 @@
+
+========================================================================================================
+
+
+Experiment No.: 3
+Title: Write a Python program to import data from Comma Separated Files (CSV) file, clean 
+data, and export data in CSV file.
+
+Algorithm:
+• Read data set in Pandas Dataframe
+• Change the default header in DataFrame.
+• Replace missing values with constant or values specified
+• Replace missing values with mean 
+• Replace missing values with mode
+• Replace the missing values with imputed values based on the other characteristics of 
+the record
+• Export pre-processed dataset in CSV or other formats
+
+
+========================================================================================================
+
+
+Experiment No.: 5
+Title: Write a program to perform Exploratory Data Analysis (EDA) on data set.
+
+Algorithm:
+• Read data set into Pandas Datafrmes.
+• Apply EDA techniques for understanding of data
+
+
+========================================================================================================
+
+
+Experiment No.: 10
+Title: Write a program to build predictive model using classification techniques
+
+Algorithm:
+• Read data set into Pandas Dataframes.
+• Build classification models using classification algorithms in Machine Learning.
+• Classify new instance using classification model
+
+
+========================================================================================================
+
+
+
