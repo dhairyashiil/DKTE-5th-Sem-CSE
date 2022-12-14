@@ -1,0 +1,109 @@
+		CSL301: Operating System-I
+
+			Assignment No.1 
+
+Q1. Define OS and list the basic services provided by OS.
+
+Q2. Diiferentiate between single processor system and multiprocessor system.
+
+Q3. Explain symetric and asymetric multiprocessor system with neat diagram.
+
+Q4. Explain multiprocessor OS & their types in detail.
+
+Q5. Define following type of systems with their properties.
+	a. Time sharing System
+	b. Distributed System	
+	c. Real-time System
+	d. Parallel System
+
+Q6. Write a note on:	
+	a. Computing Environments
+	b. System calls
+	c. OS Structure
+
+
+----------------------------------------------------------------------------------------------------
+		   CSL301: Operating System-I
+			Assignment No.2 
+
+Q1. What is process? explain the process concept in detail. 
+
+Q2. With the help of suitable diagram explain PCB.
+
+Q3. Explain process states using process state diagram.
+
+Q4. What is scheduler? explain the different types of schedulers in os.
+
+Q5. Explain various types of queues with the help of queueing diagram.
+
+Q6. Write a note on:	
+	a. Context switch
+	b. Shared memory model
+	c. Message passsing model
+	d. RPC
+	e. Scheduling Criteria
+	f. Real-time CPU scheduling
+Q7. Explain any two CPU-scheduling algorithms with suitable examples.
+
+----------------------------------------------------------------------------------------------------
+		   CSL301: Operating System-I
+			Assignment No.3 
+Q1. Differentiate between preemptive & non-preemptive scheduling
+Q2. Which of the following scheduling algorithms could result in starvation?
+	a. First-come, first-served
+	b. Shortest job first
+	c. Round robin
+	d. Priority
+
+Q3. Excercise No. 6.3 from Process Management Chapter in e-book
+Q4. Excercise No. 6.16 from Process Management Chapter in e-book 
+-------------------------------------------------------------------------------------------------------
+		CSL301: Operating System-I
+			Assignment No.4
+Q1. What is the critical section problem? Explain Peterson’s solution for solving criticalsection problem.
+Q2. Write a note on: 
+	a. Mutex Locks 
+	b.Semaphores
+	c. Classic problems of synchronization
+Q3. What is Deadlock? Explain conditions for occurance of deadlock?
+Q4. Explain deadlock prevention techniques.
+Q5. Explain deadlock avoidance techniques.
+Q6. Explain Banker's algorithm with suitable example.
+Q7. Write a note on- 
+	a. Wait-for graph.
+	b. Recovery from deadlock.
+
+----------------------------------------------------------------------------------------------------
+		   CSL301: Operating System-I
+			Assignment No.5
+
+Q1. Explain the binding of instructions and data to memory.
+Q2. Write a note on-
+	a. Logical Versus Physical Address Space
+	b. Swapping
+	c. Memory Protection
+	d. Fragmentation
+	e. Translation Look-aside Buffer (TLB) in Paging
+Q3. Given 4 memory partitions of 100 KB, 150KB, 50KB, 200KB (in order), 
+    how would the first fit, best fit, and worst fit algorithms place processes of size 50 KB, 125KB, 99KB, 200KB (in order)? 
+    Rank the algorithms in terms of how efficiently they use memory. 
+Q4. Explain segmentation with segmentation hardware.
+Q5. Explain paging with suitable example.
+Q6. What is page replacement? Explain any of the page replacement technique with example.
+-------------------------------------------------------------------------------------------------------
+		CSL301: Operating System-I
+			Assignment No.6
+Q1. What is file? explain file attributes & operations.
+Q2. How to lock the open files? Explain the two file access methods.
+Q3. What is directory? Explain the advantages and disadvantages of single-level directory and tree-structured directory.
+Q4. Explain the process of file system mounting.
+Q5. Illustrate different File Sharing mechanisms.
+-------------------------------------------------------------------------------------------------------
+		CSL301: Operating System-I
+			Assignment No.7 
+Q1. Explain the commonly found bus types in a modern PC with suitable diagram.
+Q2. What is I/O Interrupt? Explain Interrupt driven I/O cycle.
+Q3. What is DMA? Explain the steps in a DMA Transfer with suitable diagram.
+Q4. Explain the services provided by kernel I/O subsystem in detail. 
+Q5. Explain the concept of I/O performace.
+-------------------------------------------------------------------------------------------------------
