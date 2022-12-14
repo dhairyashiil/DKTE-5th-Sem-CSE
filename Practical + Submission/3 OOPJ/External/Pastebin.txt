@@ -1,0 +1,2005 @@
+===========================================================================
+
+E01: WAP to find Day on given Date using CommandLine Arguments
+
+public class calender 
+{
+	public static void main ( String[] args) {
+
+        int day , month , year ;
+        
+        day = Integer.parseInt(args[0]) ;
+	month = Integer.parseInt(args[1]) ;
+        year = Integer.parseInt(args[2]) ;
+	Date obj = new Date() ;
+	int v = obj.valid(day , month , year );
+        if ( v == 1 )
+	{
+		int dayIndex=obj.findDay( day , month , year );
+		switch ( dayIndex ) 
+		{
+			case 0 : System.out.println("The Day for given date is Sunday. " ) ;
+			break ;
+			case 1 : System.out.println("The Day for given date is Monday. " ) ;
+			break ;
+			case 2 : System.out.println("The Day for given date is Tuesday. " ) ;
+			break ;
+			case 3 : System.out.println("The Day for given date is Wednesday. " ) ;
+			break ;
+			case 4 : System.out.println("The Day for given date is Thrusday. " ) ;
+			break ;
+			case 5 : System.out.println("The Day for given date is Friday. " ) ;
+			break ;
+			default : System.out.println("The  Day for given date is Saturday. " ) ;
+			
+                 }
+	}
+	else 
+	         System.out.println("Invalid date " ) ;
+				
+         } 
+}
+
+class Date 
+{
+	int valid ( int day , int month , int year )
+	{
+		 if ( year >= 1000 && year <= 2500 )
+		 {
+			if ( month >= 1 && month <=12 )
+			{
+				if ( day >=1 && day <=31)
+				{
+					if ( ( day >= 1 && day <= 30 ) && ( month == 4 || month == 6 || month == 9 || month == 11 ) )
+						return 1 ;
+					else if (  (day >= 1 && day <= 31 ) && ( month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 ) )
+						return 1 ;
+					else if (  (day >= 1 && day <= 28 ) && ( month == 2 ) )
+						return 1;
+					else if ( day == 29 && month == 2  && ( ( year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 )) ) )
+						return 1 ;
+					else
+						return 0 ;
+				}
+				else 
+					return 0;
+			}
+			else 
+				return 0 ; 
+		 }
+		 else 
+			 return 0 ;
+	}
+		
+	
+ 	int findDay( int day , int month , int year ) {
+
+		       
+
+			
+
+				int month_no[] = { 0 , 3 , 3 , 6 , 1 , 4, 6 , 2 , 5 , 0 , 3 , 5 } ;
+				int leap , flag , year_code ;
+                        	if ( ( year / 100 ) % 2 == 0 ) {
+
+					if ( ( year / 100 ) % 4 == 0 ) 
+						year_code = 6 ;
+					else 
+						year_code = 2 ;
+			  	}
+				else {
+					if ( ( ( year / 100 ) - 1 ) % 4 == 0 )
+						year_code = 4 ;
+					else
+						year_code = 0 ; 
+			   	}
+
+                        	if ( year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 ) )
+					leap = 1 ;
+				else 
+					leap = 0 ;
+			
+				flag = ( year % 100 ) + ( ( year % 100 ) / 4 ) + day + month_no[month - 1] + year_code ;
+     				if ( leap == 1 ){
+							if ((flag % 7 )> 0)
+									return ((flag)%7) -1 
+							else 
+								return 6;
+						} 
+					
+				else
+					return  ( flag % 7 )  ;
+
+                       
+                        
+            	
+                   }
+
+
+}
+
+run command :
+javac calendar.java
+java calendar 10 10 2010
+
+Algorithm:1.Create class Calendar.2.Define the main method. 3.Storecommand  line  arguments in particular variables.(First  is  date,  second  ismonth and third is year).4.By using switch case and different for loops display particular day for given date. 5.Save the program with the name of the class which consist of main() method.6.Compile the program from command prompt by using javac command.7.Execute program by passing command line argument
+
+
+
+===========================================================================
+
+E02 Write a program to implement matrix operations.
+
+import java.util.*;
+
+class Matrix
+{
+	private double[][] mat;
+	int row, column;
+
+	//constructor
+	Matrix()
+	{
+		row=0;
+		column=0;
+	}
+
+	//constructor
+	Matrix(int r, int c)
+	{
+		row = r;
+		column = c;
+		mat = new double[row][column];
+	}
+
+	//function to accept matrix values from user
+	public void get_input()
+	{
+		Scanner s = new Scanner(System.in);
+		int i=0,j=0;
+		
+		System.out.println("Enter the matrix elements(row-wise)");
+		for (i=0; i < row; i++)
+		{
+			for(j=0; j<column; j++)
+	        {
+				mat[i][j] = s.nextDouble();
+			}
+
+		}
+	}
+
+	//function to print matrix 
+	public void print_matrix()
+	{
+		int i = 0, j = 0;
+		System.out.println("The matrix is:>>");
+		for (i = 0; i < row; i++)
+		{
+			System.out.println("");
+			for (j = 0; j < column; j++)
+			{
+				System.out.print("   "+mat[i][j]);
+			}
+
+		}
+	}
+
+	//function to add 2 matrices
+	public Matrix add(Matrix m1)
+	{
+		Matrix ans = new Matrix(row,column);
+		int i=0,j=0;
+		if (this.row != m1.row || this.column != m1.column)
+		{
+			System.out.println(" \n ERROR: The two matrices should have same no. of rows and columns for addition!");
+		}
+		else
+		{
+			for (i = 0; i < row; i++)
+			{
+				for (j = 0; j < column; j++)
+				{
+					ans.mat[i][j] = this.mat[i][j] + m1.mat[i][j];
+				}
+			}
+		}
+		return ans;
+	}
+
+	//function to subtract 2 matrices
+	public Matrix sub(Matrix m1)
+	{
+		Matrix ans = new Matrix(row,column);
+		int i=0,j=0;
+		if (this.row != m1.row || this.column != m1.column)
+		{
+			System.out.println(" \n ERROR: The two matrices should have same no. of rows and columns for subtraction!");
+		}
+		else
+		{
+			for (i = 0; i < row; i++)
+			{
+				for (j = 0; j < column; j++)
+				{
+					ans.mat[i][j] = this.mat[i][j] - m1.mat[i][j];
+				}
+			}
+		}
+		return ans;
+	}
+	
+	//function to multiply  2 matrices
+	public Matrix mul(Matrix m1)
+	{
+		Matrix ans = new Matrix(this.row, m1.column);
+		int i=0,j=0;
+		if (this.column != m1.row)
+		{
+			System.out.println(" \nERROR: The two matrices are not compatible for Multiplication!");
+		}
+		else
+		{
+			
+			for (i = 0; i < row; i++)
+			{
+				for (j = 0; j < m1.column; j++)
+				{
+					for ( int k = 0 ; k < column ; k++ )
+					ans.mat[i][j] += this.mat[i][k] * m1.mat[k][j];
+				}
+			}
+		}
+		return ans;
+	}
+	
+	
+	//function scalar multiplication
+	public Matrix sca()
+	{
+                Scanner s = new Scanner(System.in);
+		System.out.println(" \n\nEnter Integer for Sclar Multiplication!");
+		int r = s.nextInt() ;
+		Matrix ans = new Matrix(row,column);
+		int i=0,j=0;
+		for (i = 0; i < row; i++)
+		{
+
+			for (j = 0; j < column; j++)
+			{
+				
+				ans.mat[i][j] = r * this.mat[i][j];
+			}
+		}
+		
+		return ans;
+	}
+
+
+	
+	//function to transpose a Matrix.
+	public Matrix trans()
+	{
+                Matrix ans = new Matrix(column , row);
+		int i=0,j=0;
+		for (i = 0; i < column ; i++)
+		{
+
+			for (j = 0; j < row ; j++)
+			{
+				
+				ans.mat[i][j] = this.mat[j][i];
+			}
+		}
+		
+		return ans;
+	}
+	
+	//function to divide 2 matrices
+	public Matrix div(Matrix m1)
+	{
+	 	
+		Matrix ans = new Matrix(row,column);
+		int i=0,j=0;
+		if (this.row != m1.row || this.column != m1.column)
+		{
+			System.out.println(" \n ERROR: The two matrices should have same no. of rows and columns for Division!");
+		}
+		else
+		{
+			for (i = 0; i < row; i++)
+			{
+				for (j = 0; j < column; j++)
+				{
+					ans.mat[i][j] = this.mat[i][j] / m1.mat[i][j];
+				}
+			}
+		}
+		return ans;
+	}
+
+
+}
+
+
+class matrixtest
+{
+
+	private static Matrix m1,m2,ans;
+	public static void main(String args[])
+	{
+		int i = 0, j = 0,r=0,c=0;
+		Scanner s = new Scanner(System.in);
+
+		
+		System.out.println("Enter no. of rows for 1st Matrix:");
+		r = s.nextInt();
+		System.out.println("Enter no. of columns for 1st Matrix:");
+		c = s.nextInt();
+
+		
+		System.out.println("\nEnter the first matrix:>>");
+		m1 = new Matrix(r,c);
+		m1.get_input();
+
+		
+		System.out.println("\nEnter no. of rows for 2nd Matrix:");
+		r = s.nextInt();
+		System.out.println("Enter no. of columns for 2nd Matrix:");
+		c = s.nextInt();
+
+		
+		System.out.println("\nEnter the second matrix:>>");
+		m2 = new Matrix(r,c);
+		m2.get_input();
+
+		
+		ans = m1.add(m2);
+		System.out.println("\nAddition of the two matrices is:>>");
+		ans.print_matrix();
+
+		
+		ans = m1.sub(m2);
+		System.out.println("\n\nSubtraction of the two matrices is:>>");
+		ans.print_matrix();
+	
+		ans = m1.mul(m2);
+		System.out.println("\n\nMultiplication  of the two matrices is:>>");
+		ans.print_matrix();
+
+		ans = m1.sca();
+		System.out.println("\nSclar Multiplication  of the 1st matrices is:>>");
+		ans.print_matrix();
+		
+		ans = m2.sca();
+		System.out.println("\nSclar Multiplication  of the  2nd matrices is:>>"); 
+		ans.print_matrix();
+		                                       
+		ans = m1.trans();
+		System.out.println("\n\nTranspose of the 1st matrices is:>>");
+		ans.print_matrix();
+
+		ans = m2.trans();
+		System.out.println("\n\nTranspose of the 2nd matrices is:>>");
+		ans.print_matrix();
+		
+		ans = m1.div(m2);
+		System.out.println("\nDivision  of the two matrices is:>>");
+		ans.print_matrix();
+		
+	}
+}
+Algorithm:1. Define Matrix class instance variables & methods for addition, substraction,matrix multiplication, division, scalar multiplication, transpose etc.2. Define class MatrixTest with two objects of Matrix class.3. Call the methods for addition, subtraction,matrix multiplication, division, scalarmultiplication, and transposewithhelp of that object.4.Print the results.
+===========================================================================
+
+E03: WAP to Create a class Employee & EmployeeTest
+
+import java.util.*;
+class Employee
+{
+	private String fname ;
+	private String lname ;
+	private double msalary ;
+	
+	Employee() 
+	{
+		fname = " " ;
+		lname = " ";
+		msalary = 0.0;
+	}
+	
+	Employee(String fname , String lname , int msalary1 )
+	{
+		this.fname = fname ;
+		this.lname = lname;
+		this.msalary = msalary1 ;
+		if ( this.msalary < 0.0 )
+			this.msalary = 0.0 ;
+	}
+
+	public void setFname ( String fname )
+	{
+		this.fname = fname ;
+	}
+
+	public String getFname() 
+	{
+		return this.fname ;
+	}
+	
+	public void setLname ( String lname )
+	{
+		this.lname = lname ;
+	}
+
+	public String getLname() 
+	{
+		return this.lname ;
+	}
+	
+	public void setMsalary(int msalary1 )
+	{
+		if ( msalary1 < 0.0 ) 
+			this.msalary = 0.0 ;
+		else 
+			this.msalary = msalary1 ;
+	}
+
+	public double getMsalary()
+	{
+		return msalary ;
+	}
+
+	
+	public double calyearlysal()
+	{
+		return msalary*12 ;
+	}
+
+	public double raisedsal()
+	{
+		msalary = msalary + msalary/10 ;
+		return msalary*12 ;
+	}
+}
+
+class EmployeeTest
+{
+	public static Employee a,b ;
+	public static void main(String args[])
+	{
+ 		Scanner s = new Scanner(System.in ) ;
+                System.out.println("\nEnter Details of 1st  Employee. ");
+
+		System.out.println("First Name : ") ;
+		String first = s.next() ;
+		System.out.println("Last Name : ") ;
+		String last = s.next() ;
+		System.out.println("Monthly Salary : ") ;
+		int sal = s.nextInt() ;
+		
+
+		a = new Employee ( first , last , sal ) ;
+		
+
+		System.out.println("\nEnter Details of 2nd  Employee. ");
+
+		System.out.println("First Name : ") ;
+		first = s.next() ;
+   		System.out.println("Last Name : ") ;
+		last = s.next() ;
+		System.out.println("Monthly Salary : ") ;
+		sal = s.nextInt() ;
+		
+		b = new Employee ( first ,last ,sal ) ; 
+
+                
+		System.out.println("\n NAME \t\t\tAnnual-Salary \t\t\tAfter-Increment ") ;
+		System.out.println(a.getFname()+" "+a.getLname() + "\t\t"+ a.calyearlysal()+ "\t\t\t"+a.raisedsal()) ;
+		System.out.println(b.getFname()+" "+b.getLname() + "\t\t"+ b.calyearlysal()+ "\t\t\t"+b.raisedsal()) ;
+			
+	}
+}
+Algorithm: 1.Create class employee with data member’s first name, a last name and a monthly salary. 2.Define a default constructor and initialize the instance variables. 3.Write a method set which accepts values for instance variables from user. 4.If user provides negative value for monthly salary, set it to 0.0(zero). 5.Write a get method to display the instance-variables. 6.Define class EmployeeTest, write a main method in this class. 7.Create two Employee objects and display each object's yearly salary. 8.Raise the salary by 10% and display each object's yearly salary
+
+===========================================================================
+
+E04: WAP for SavingsAccount Class (Static Keyword)
+
+import java.util.*;
+class SavingsAccount 
+{
+	private static double annualInterestRate = 5.00;
+	private double savingsBalance;
+
+	SavingsAccount()
+	{
+		savingsBalance = 100.0;
+        }
+
+	SavingsAccount(double bal)
+	{
+		this.savingsBalance = bal ;
+        }
+		
+	public double getsavingsBalance()
+	{
+		return savingsBalance ;
+	}
+
+
+	public static double getannualInterestRate()
+	{
+		return annualInterestRate;
+	}
+
+	public double calculateMonthlyInterest()
+	{
+		double Month_Int = ((this.savingsBalance * annualInterestRate)  / 12 );
+		return Month_Int ;
+
+	}
+
+
+	public static void modifyInterestRate(double r)
+	{
+		annualInterestRate = r ;
+	}
+}
+
+class SavingAccount
+{
+	public static SavingsAccount saver1,saver2 ;
+	public static void main(String args[])
+	{
+ 		saver1 = new SavingsAccount(2000.00);
+		saver2 = new SavingsAccount(3000.00);
+
+		
+		Scanner s = new Scanner(System.in ) ;
+                System.out.println("\nEnter new Interest Rate in Percentage. ");
+		double rate = s.nextDouble() ;
+		SavingsAccount.modifyInterestRate(rate);
+		
+		double new1 = saver1.getsavingsBalance() + saver1.calculateMonthlyInterest();
+		double new2 = saver2.getsavingsBalance() + saver2.calculateMonthlyInterest();
+      		System.out.println("\nNew Balance of Account Holders at Interest Rate of "+rate+"%.");
+		System.out.println("\nSaver1 : "+ String.format("%.2f",new1));
+		System.out.println("\nSaver2 : "+ String.format("%.2f",new2));
+
+		System.out.println("\nEnter new Interest Rate in Percentage. ");
+		rate = s.nextDouble() ;
+		SavingsAccount.modifyInterestRate(rate);
+                new1 = saver1.getsavingsBalance() + saver1.calculateMonthlyInterest();
+		new2 = saver2.getsavingsBalance() + saver2.calculateMonthlyInterest();
+      		System.out.println("\nNew Balance of Account Holders at Interest Rate of "+rate+"%.");
+		System.out.println("\nSaver1 : "+ String.format("%.2f",new1));
+		System.out.println("\nSaver2 : "+ String.format("%.2f",new2));
+			
+	}
+}
+Algorithm:Create class SavingsAccount having static variable annualInterestRateDeclare private instance variable savingsBalance.Define a method calculateMonthlyInterest to calculate the monthly interest .Define a static method modifyInterestRate to set the annualInterestRate to a new value.Define a class SavingsAccount.Create  two  objects  of  class  savingsAccount  saver1  and  saver2  by  using  parameterized constructor with initial balances of Rs 2000.00 and Rs 3000.00 respectively.Set annualInterestRate to 4%, then calculate the monthly interest and print the newBalances for both savers.8) Set annualInterestRate to 5%, then calculate the monthly interest and print the newBalances for both savers.
+===========================================================================
+
+E05 Write a program to demonstrate single inheritance
+
+import java.util.* ;
+class Person {
+	private String name ;
+	private int birth_year  ;
+	private int birth_month ;
+	private int birth_day ;
+	private double height;
+	private int weight;
+	private String Address;
+	
+	public Person() { }
+	
+	
+	public Person(String name,int dd,int mm, int yy ,double ht ,int  wt, String ad) {
+		this.name = name;
+		this.birth_day = dd ;
+		this.birth_month = mm ;
+		this.birth_year = yy ;
+		this.height = ht;
+		this.weight = wt;
+		this.Address = ad;
+	}
+	
+	public void SetName(String n){ name = n;}
+	public void SetHeight(double h){ height = h;} 
+	public void SetWeight(int w){ weight = w;} 
+	public void SetAddress(String add){Address  = add;}
+	public void SetBirthdate(int dd,int mm,int yy){ 
+		birth_day = dd ;
+		birth_month = mm ;
+ 		birth_year = yy ;
+	}
+
+	public String getName()
+	{	
+		return this.name;
+	}
+	
+	public String getBirthdate() {
+		String Str1 = String.valueOf(this.birth_year) ;
+		String Str2 = String.valueOf(this.birth_month) ;
+		String Str3 = String.valueOf(this.birth_day) ;
+         	String birth = Str3 + "-" + Str2 + "-" + Str1;
+		return birth ;
+	}
+	
+	public double getHeight() {
+		return this.height;
+	}
+	
+	public int getWeight() {
+		return this.weight;
+	}
+	
+	public String getAddress() {
+		return this.Address;
+	}
+	
+	public int calAge() {
+		int age = 2021 - this.birth_year ;
+		return age ;
+	}
+	
+
+	public void display_person() {
+		System.out.println("Name        : "+getName());
+		System.out.println("Birthday    : "+getBirthdate());
+		System.out.println("Height      : "+getHeight());
+		System.out.println("Weight      : "+getWeight());
+		System.out.println("Age         : "+calAge());
+		System.out.println("Address     : "+getAddress());
+   }
+	
+}
+
+ class Student extends Person {
+
+	private int roll_no ;
+	private int phy ;
+	private int chem ;
+	private int math ;
+
+	public Student() { }
+	
+	public void setroll_no(int r){ roll_no = r;}
+	public void setmarks(int p,int c,int m) {
+		phy = p;
+		chem = c;
+		math = m; }
+	 
+
+	public Student(String name,int dd,int mm, int yy ,double ht ,int  wt, String ad,int roll, int x ,int y,int z) {
+		super(name,dd,mm,yy,ht,wt,ad);
+		roll_no = roll;
+		phy = x ;
+		chem = y ;
+		math = z;
+	}
+
+	public double calulateAvg(){
+		double avg = (phy + chem + math) / 3 ;
+		return avg ;
+	}
+	
+	public void show_student() {	
+
+		System.out.println("Roll No            : "+this.roll_no);
+		System.out.println("Marks in Physics   : "+this.phy);
+		System.out.println("Marks in Chemistry : "+this.chem);
+		System.out.println("Marks in Maths     : "+this.math);
+		System.out.println("Average            : "+calulateAvg());
+			
+	}
+}
+
+class Emplyoee extends Person {
+
+	private int empid ;
+	private int salary ;
+	public Emplyoee() { }
+     	
+	 
+
+	public Emplyoee(String name,int dd,int mm, int yy ,double ht ,int  wt, String ad, int a , int s ) {
+		super(name,dd,mm,yy,ht,wt,ad);
+		empid = a ;
+		salary = s ; 
+	}
+	
+
+	public void setempid(int id){ empid = id;}
+	public void setsalary(int s) {salary = s; }
+
+	public int getEmpid(){ return this.empid;}
+	public int getSalary(){ return this.salary;}
+	public void displayEmplyoee() {
+			
+		System.out.println("\nEmplyoee ID   : "+getEmpid());
+		System.out.println("Salary        : "+getSalary());
+		System.out.println("Tax Imposed   : "+calculateTax());
+		
+		
+	}
+	public double calculateTax() {
+		return (salary* 5) /100 ;
+        }
+	
+}
+public class InheritanceTest {
+	
+	public static Student s1 ;
+        public static Emplyoee e1;
+	public static void main(String[] args) {
+		
+
+		s1 = new Student("Praveen Sathe" , 22 , 5 ,1999 , 172.54 , 69 , "Poongli Enclave, Bengaluru.",114, 78 , 86 ,80 ) ;
+
+		System.out.println("\n\nDisplaying Details of Student.\n");
+		s1.show_student();
+		s1.display_person();
+
+                e1 = new Emplyoee("Anand Satpute" , 28 , 12 ,2000 , 173.2 , 52 , "Chiplun, Maharastra.",113,80000);
+
+		Scanner s = new Scanner(System.in ) ;
+		
+		System.out.println("\n\nShowing Detail of Emplyoee.");
+		e1.displayEmplyoee();
+                e1.display_person();
+
+		
+		
+
+		
+	}
+
+
+}
+Algorithm: 1Create  class  Person having  data  members  name,  birthdate,  height,  weight,  address  and calculateAge method.2Create classes Student and Employeewhich will extend Person class3. Derive class Student withmembers as roll no, marks, calculateAvg().4. Also derive class Employee with members as empId, salary, calculateTax().5.Create  InheritanceTest  class  consisting  main  method  for  creating  the  objects  of  the Person/Student/Employeeclasses. 6.Demonstrate  the  access  of  properties  and  behaviors  of  Person  class  in  Student  and Employeeclass. 
+===========================================================================
+
+E06:Design java interfaces for ADT stack and Queue.
+
+import java.util.*;
+
+
+
+interface Stack
+{
+	void push();
+	void pop();
+	void peek();
+	void sdisplay();
+}
+
+
+
+interface Queue
+{
+	void enqueue();
+	void dequeue();
+	void qdisplay();
+}
+
+
+
+
+
+class StackQueue implements Stack,Queue
+{
+	int [] arr;
+	int top,fr,rr;
+	Scanner sc = new Scanner(System.in);
+	StackQueue()
+	{
+		arr=new int[5];
+		top=-1;
+		fr=0;
+		rr=-1;
+	}
+
+	public void push()
+	{
+		if(top<4)
+		{
+			System.out.print("Enter Element :");
+			arr[++top]=sc.nextInt();
+		}
+		else
+		{
+			System.out.println("Overflow");
+		}
+	}
+
+	public void pop()
+	{
+		if(top==-1)
+			System.out.println("Underflow");
+		else
+		{
+			top--;
+		}
+	}
+
+	public void peek()
+	{
+		System.out.println("Top element is "+arr[top]);
+	}
+
+	public void sdisplay()
+	{
+		int i=top;
+		System.out.print("Stack Data is ");
+		if(top==-1)
+			System.out.print("Empty");
+		else
+		{
+			while(i>=0)
+			{
+				System.out.print(" "+arr[i]);
+				i--;
+			}
+		}
+	}
+
+	public void enqueue()
+	{
+		if(rr>=4)
+			System.out.println("Overflow");
+		else
+		{
+			System.out.print("Enter Element :");
+			arr[++rr]=sc.nextInt();
+		}
+	}
+
+	public void dequeue()
+	{
+		if(fr>rr)
+			System.out.println("Underflow");
+		else
+		{
+			fr++;
+		}
+	}
+
+	public void qdisplay()
+	{
+		int i=fr;
+		System.out.print("Queue Data is ");
+		if(fr>rr)
+			System.out.print("Empty");
+		else
+		{
+			while(i<=rr)
+			{
+				System.out.print(" "+arr[i]);
+				i++;
+			}
+		}
+	}
+
+	void smenu()
+	{
+		int opt=0;
+		while(true)
+		{
+			System.out.println("\n----------------------STACK MENU ---------------------------------------------/ ");
+			System.out.print("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Back\nChoose One :");
+			opt=sc.nextInt();
+			if(opt==5)
+				break;
+			if(opt>5)
+			{
+				System.out.println("Invalid Input");
+				continue;
+			}
+			switch(opt)
+			{
+				case 1:
+					push();
+					break;
+				case 2:
+					pop();
+					break;
+				case 3:
+					peek();
+					break;
+				case 4:
+					sdisplay();
+			}
+		}
+	}
+
+	void qmenu()
+	{
+		int opt=0;
+		while(true)
+		{
+			System.out.println("\n----------------------QUEUE MENU ---------------------------------------------/ ");
+			System.out.print("1.Insert\n2.Remove\n3.Display\n4.Back\nChoose One :");
+			opt=sc.nextInt();
+			if(opt==4)
+				break;
+			if(opt>4)
+			{
+				System.out.println("Invalid Input");
+				continue;
+			}
+			switch(opt)
+			{
+				case 1:
+					enqueue();
+					break;
+				case 2:
+					dequeue();
+					break;
+				case 3:
+					qdisplay();
+			}
+		}
+	}
+}
+
+
+
+class StackQueueTest
+{
+	public static void main(String[] args)
+	{
+		StackQueue a;
+		int c=0;
+		Scanner sc=new Scanner(System.in);
+		while(true)
+		{
+			System.out.println("\n----------------------MAIN MENU ---------------------------------------------/");
+			System.out.print("1.Stack\n2.Queue\n3.Exit\nChoose One :");
+			c=sc.nextInt();
+			if(c>=3)
+				break;
+			else
+			{
+				a=new StackQueue();
+				if(c==1)
+					a.smenu();
+				else
+					a.qmenu();
+			}
+		}
+	}
+}
+Algorithm:1.Define  interface StackInterface and declare the  methods push, pop, peek, display inside the interface. 2.Define  interface  QueueInterface  and  declare  the  methods  enqueue,  dequeue, display inside the interface. 3.Define  a  class  StackQueue  that  implements  both these  interfaces  and  define  the methods declared in these interfaces. 4.Use  the  class  StackQueue to  perform  the  stack  and  queue operations  using  array implementation.5.Define  class  StackQueueTest  and  write  main  method  in  this  class.  Create  object of StackQueue class and call the methods using switch. 6.Display the result.
+===========================================================================
+
+E07:Write a program to implement mathematical package for arithmetic
+
+#1 Arithematic
+
+package Mymath ;
+public class Arithmetic{
+    public static long sub(long x,long y) {
+        return x - y ;
+    }
+ 
+    public static long add(long x, long y) {
+        return x + y ;
+    }
+ 
+    public static long mul(long x ,long y){
+        return x*y ;
+    }
+ 
+    public static long div(long x ,long y) {
+        return x/y ;
+    }
+}
+
+#2 Stat
+package Mymath; 
+public class Stat {
+    public static int max(int[] array){
+        int max = 0;
+ 
+        for(int i=0; i<array.length; i++ ) {
+            if(array[i]>max) {
+                max = array[i];
+        }
+      }
+      return max;
+    }
+ 
+    public static int min(int[] array){
+        int min = array[0];
+ 
+        for(int i=0; i<array.length; i++ ) {
+           if(array[i]<min) {
+              min = array[i];
+           }
+        }
+        return min;
+    }
+ 
+ 
+ 
+    public static int sum(int[] a ){
+        int sum = 0;
+        for (int i = 0 ; i < a.length; ++i)
+            sum += a[i];
+        return sum ;
+    }
+ 
+    public static long avg(int[] a ){
+        int sum = 0;
+        for (int i = 0 ; i < a.length; ++i)
+            sum += a[i];
+        return sum/a.length ;
+    }
+ 
+}
+ 
+
+
+
+   
+
+#3 Trig
+package Mymath;
+public class Trig{
+	double angle;
+	public Trig(double ang){
+		angle = Math.toRadians(ang);
+	}
+	public double getSine(){
+		double a = Math.sin(angle);
+		return a;
+	}
+	public double getCoSine(){
+		double a = Math.cos(angle);
+		return a;
+	}
+	public double getTangent(){
+		double a = Math.tan(angle);
+		return a;
+	}
+	public double getCotangent(){
+		double a = 1/Math.tan(angle);
+		return a;
+	}
+	public double getCosecant(){
+		double a = 1/Math.sin(angle);
+		return a;
+	}
+	public double getSecant(){
+		double a = 1/Math.cos(angle);
+		return a;
+	}
+}
+
+
+#4 Pack demo
+import Mymath.Arithmetic;
+import Mymath.Stat;
+import Mymath.Trig;
+import java.util.*;
+public class PackDemo{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		Trig n = new Trig(45);
+		System.out.println("Sine  "+n.getSine());
+		System.out.println("Cosine  "+n.getCoSine());
+		System.out.println("Tangent  "+n.getTangent());
+		System.out.println("Cotangent  "+n.getCotangent());
+		System.out.println("Cosecant  "+n.getCosecant());
+		System.out.println("Secant  "+n.getSecant());
+		Arithmetic ar = new Arithmetic();
+		System.out.println("\nAddition  "+ar.add(37,5));
+		System.out.println("Subtraction  "+ar.sub(37,5));
+		System.out.println("Multiplication  "+ar.mul(37,5));
+		System.out.println("Division  "+ar.div(37,5));
+		int a[] = {23,52,30,14,45};
+		Stat s = new Stat();
+ 
+		System.out.println("\nMinimum no "+s.min(a));
+		System.out.println("Maximum no "+s.max(a));
+		
+		System.out.println("Sum "+s.sum(a));
+		System.out.println("Average "+s.avg(a));
+}
+}
+
+Algorithm:Create a package named MyMath.Create a class named Trig having data member representing angle in degree.oDefine method to get sine of angle given in degrees.oDefine method to get cosine of angle given in degrees.oDefine method to get tangent of angle given in degrees.oDefine method to get secant of angle given in degrees.oDefine method to get cosecant of angle given in degrees.oDefine method to get cotangent of angle given in degrees.Create a class named Arithmetic in same package.oDefine methods for arithmetic operations like addition, subtraction, multiplicationand division of float values in this class.Create a class named Stat in same package.oDefine methods for Statistical operations like min, max, count, sum and average.Create a class PackDemo outside of MyMath package.oWrite main method to demonstrate operations.oIn  main  method  create  objectof  Trig  and  call  methods  to  get  sine,  cosine,  tangent, secant, cosecant and cotangent of given angle in radians.oIn main method create object of Arithmetic class and callsits methods.oIn main method create objectof Stat and call methods to perform operations. Likemin, max, count etc.
+===========================================================================
+
+E08: Demonstrate User Defined Exception
+
+import java.util.*;
+
+class myException extends Exception
+{
+	myException(String str)
+	{
+		super(str);
+	}
+}
+
+class Operations {
+    public int a ;
+    public int b ;
+
+    Operations(int a, int b){
+        this.a= a;
+        this.b = b;
+    }
+
+    public void Addition(){
+        int add = a+b ;
+        try 
+        {
+            if (add < 1000 )
+            {
+                System.out.println("Addition is: "+add);
+            }
+            else {
+                throw new myException("Too Long Addition.");
+            }
+        }
+        catch(myException e)
+		{
+			System.out.println(e);
+		}
+    }
+
+    public void Subtraction(){
+        int sub = a - b;
+        try
+		{
+			if (sub > 0 )
+			{
+				System.out.println("Subtration is: "+sub);
+			}
+			else
+			{
+				throw new myException("Negative Answer.");
+			}
+		}
+		catch(myException e)
+		{
+			System.out.println(e);
+		}
+    }
+    
+
+    public void  Multiplication(){
+        int mul =  a * b ;
+        try
+		{
+			if (mul < 5000)
+			{
+				System.out.println("Multiplication is: "+mul);
+			}
+			else
+			{
+				throw new myException("Too Long Multiplication");
+			}
+		}
+		catch(myException e)
+		{
+			System.out.println(e);
+		}
+    }
+    
+
+    public void Division(){
+        double div  = a / b;
+        try
+		{
+			if (b >= 0)
+			{
+				System.out.println("Division is: "+div);
+			}
+			else
+			{
+				throw new myException("Division not fesible.");
+			}
+		}
+		catch(myException e)
+		{
+			System.out.println(e);
+		}
+    }
+
+    
+}
+
+public class Exception_my {
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+		System.out.println("Enter two number: ");
+		int a = in.nextInt();
+		int b = in.nextInt();
+        Operations O = new Operations(a, b);
+        O.Addition();
+        O.Multiplication();
+        O.Division();
+        O.Subtraction();    
+    }
+}
+Algorithm:1] Create user-defined exception class MyException that extends Exception class2] Defineparameterized constructor with string as parameter.3] Create another class operation.4] Define methods for addition, Subtraction, multiply and divide in operation class and perform operations in it.5] If addition goes above 1000, generate TooLongAddition exception.6] If subtraction is below 0, generate NegativeAnswer exception.7] If multiplication is above 5000, generate TooLongMultiplication exception.8]  In  main  method  create  object  of  class  operation  and  call  the  methods.  Provide  exception handling code to handle exceptions
+===========================================================================
+
+E09:Write a program to demonstrate file handling operations
+
+#1  Readfile
+
+import java.io.*;
+import java.util.*;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+
+class ReadFile
+{
+	public static void main(String args[]) throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		String filenm,ch,data;
+		boolean done = false;
+		int i;
+		System.out.print("Enter file name do you want to open:");
+		filenm = sc.nextLine();	
+		try
+		{
+			FileInputStream fin=new FileInputStream (filenm);
+			BufferedInputStream bin=new BufferedInputStream(fin);       
+			while((i=bin.read())!=-1)
+			{    
+				System.out.print((char)i);    
+			}    
+			bin.close();    
+			fin.close();   
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		} 
+		
+		System.out.println("\n\nDo you want add data at end of the file(Yes/Exit)..??");
+		ch = sc.nextLine();  
+		if(ch.equals("yes") || ch.equals("Yes") || ch.equals("YES"))
+		{
+			System.out.print("Enter file name:");
+			filenm = sc.nextLine();	
+			try
+		   	{    
+            			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				FileOutputStream fout = new FileOutputStream(filenm,true); 
+				BufferedOutputStream bout = new BufferedOutputStream(fout);       
+             			System.out.print("Enter the Information to add in file:");
+				data = br.readLine();
+				byte b[] = data.getBytes();
+				bout.write(b);
+				bout.flush();
+				bout.close();	
+           		 }
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}       
+				
+		}
+		else if(ch.equals("exit") || ch.equals("Exit") || ch.equals("EXIT"))
+			 System.exit(0);		
+			
+	}
+}
+
+#2 Readfile_1
+
+import java.io.*;
+import java.util.*;
+
+class ReadFile_1
+{
+	public static void main(String args[]) throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		String filenm,ch,data;
+		boolean done = false;
+		int i;
+		System.out.print("Enter file name do you want to open:");
+		filenm = sc.nextLine();	
+		try
+		{
+			FileReader fr=new FileReader(filenm);
+			while((i=fr.read())!=-1) 
+		 	{
+				System.out.print((char)i);    
+		  	}
+         	 	fr.close(); 
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		} 
+		
+		System.out.println("\nDo you want add data at end of the file(Yes/Exit)..??");
+		ch = sc.nextLine();  
+		if(ch.equals("yes") || ch.equals("Yes") || ch.equals("YES"))
+		{
+			System.out.print("Enter file name:");
+			filenm = sc.nextLine();	
+			FileWriter fw = new FileWriter(filenm,true);
+			System.out.print("Enter the data to add in file:");
+			data = sc.nextLine();
+			fw.write(data);
+			fw.flush();
+			fw.close();	
+		}
+		else if(ch.equals("exit") || ch.equals("Exit") || ch.equals("EXIT"))
+			 System.exit(0);		
+			
+	}
+}
+	1.Create a class with name ReadFile.2.  Get name of the file from user.3. Create FileInputStream object. Read and display contents of file using read() method.4. Ask user if he wants to add contents to the file.5. If yes then read the contents from the user.6. Create object of FileOutputStream and write the data into file.7. If file does not existthen create a new file and store user data into it.
+==========================================================================
+	
+E10: WAP to read & write student information
+
+import java.io.*;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+
+public class StudentInfo
+{
+	public static void main(String[] args)throws IOException
+	{
+		try{
+			DataInputStream dis=new DataInputStream(System.in);
+			
+			System.out.println("Enter the rollNo:");
+			String rollNo=(dis.readLine());
+			byte b1[]=rollNo.getBytes();
+
+		        System.out.println("Enter the className:");
+			String className=dis.readLine();
+			byte b2[]=className.getBytes();
+
+		        System.out.println("Enter the age:");
+			String age=dis.readLine();
+			byte b3[]=age.getBytes();
+
+			System.out.println("Enter the city:");
+			String city=dis.readLine();
+			byte b4[]=city.getBytes();
+
+			System.out.println("Enter the height:");
+			String height=dis.readLine();
+			byte b5[]=height.getBytes();
+
+			System.out.println("Enter the weight:");
+			String weight=dis.readLine();
+			byte b6[]=weight.getBytes();
+
+			FileOutputStream fout = new FileOutputStream("STUDENT.txt");
+			
+			
+			
+			System.out.println("Enter the details of student:");
+		
+			fout.write(b1);
+			fout.write(b2);
+			fout.write(b3);
+			fout.write(b4);
+			fout.write(b5);
+			fout.write(b6);
+			fout.close();
+			char ch;
+			
+			FileInputStream fin = new FileInputStream("STUDENT.txt");
+			int i=0;
+			while((i=fin.read())!=-1)
+			{
+				System.out.println((char)i);
+			}
+		} catch(IOException e){System.out.println(e);}
+		
+		
+			
+			
+	}
+}
+Algorithm:1.Create a class with name StudentInfo.2. Define a method to get details of the Student from userusing DataInputStrean.3. Create object of FileOutputStream and write the details of the studentas a record into the file.4. Create FileInputStream object,Read and display the details of the student.
+========================================================================================================
+
+#### Experiment no 11 (Calculator using swing)
+
+import javax.swing.*;
+import java.awt.event.*;
+class Calculator implements ActionListener
+{
+	JFrame f;
+	JTextField t;
+	JButton b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bdiv,bmul,bsub,badd,bdec,beq,bclr;
+	static double a=0,b=0,result=0;
+	static int operator=0;
+	public Calculator()
+	{
+		f=new JFrame("Calculator");
+		t=new JTextField();
+		b1=new JButton("1");
+		b2=new JButton("2");
+		b3=new JButton("3");
+		b4=new JButton("4");
+		b5=new JButton("5");
+		b6=new JButton("6");
+		b7=new JButton("7");
+		b8=new JButton("8");
+		b9=new JButton("9");
+		b0=new JButton("0");
+		bdiv=new JButton("/");
+		bmul=new JButton("*");
+		bsub=new JButton("-");
+		badd=new JButton("+");
+		bdec=new JButton(".");
+		beq=new JButton("=");
+		bclr=new JButton("clear");
+
+		t.setBounds(30,40,280,30);
+		b7.setBounds(40,100,50,40);
+		b8.setBounds(110,100,50,40);
+		b9.setBounds(180,100,50,40);
+		bdiv.setBounds(250,100,50,40);
+
+		b4.setBounds(40,170,50,40);
+		b5.setBounds(110,170,50,40);
+		b6.setBounds(180,170,50,40);
+		bmul.setBounds(250,170,50,40);
+
+		b1.setBounds(40,240,50,40);
+		b2.setBounds(110,240,50,40);
+		b3.setBounds(180,240,50,40);
+		bsub.setBounds(250,240,50,40);
+
+		bdec.setBounds(40,310,50,40);
+		b0.setBounds(110,310,50,40);
+		beq.setBounds(180,310,50,40);
+		badd.setBounds(250,310,50,40);
+
+		bclr.setBounds(100,380,100,40);
+
+		f.add(t);
+		f.add(b7);
+		f.add(b8);
+		f.add(b9);
+		f.add(bdiv);
+
+		f.add(b4);
+		f.add(b5);
+		f.add(b6);
+		f.add(bmul);
+
+		f.add(b1);
+		f.add(b2);
+		f.add(b3);
+		f.add(bsub);
+		
+		f.add(bdec);
+		f.add(b0);
+		f.add(beq);
+		f.add(badd);
+
+		f.add(bclr);
+
+		f.setLayout(null);
+		f.setVisible(true);
+		f.setSize(350,500);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setResizable(false);
+
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		b3.addActionListener(this);
+		b4.addActionListener(this);
+		b5.addActionListener(this);
+		b6.addActionListener(this);
+		b7.addActionListener(this);
+		b8.addActionListener(this);
+		b9.addActionListener(this);
+		b0.addActionListener(this);
+		bdiv.addActionListener(this);
+		bmul.addActionListener(this);
+		bsub.addActionListener(this);
+		badd.addActionListener(this);
+		bdec.addActionListener(this);
+		beq.addActionListener(this);
+		bclr.addActionListener(this);
+		
+	}
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getSource()==b1)
+			t.setText(t.getText().concat("1"));
+		if(e.getSource()==b2)
+			t.setText(t.getText().concat("2"));
+		if(e.getSource()==b3)
+			t.setText(t.getText().concat("3"));
+		if(e.getSource()==b4)
+			t.setText(t.getText().concat("4"));
+		if(e.getSource()==b5)
+			t.setText(t.getText().concat("5"));
+		if(e.getSource()==b6)
+			t.setText(t.getText().concat("6"));
+		if(e.getSource()==b7)
+			t.setText(t.getText().concat("7"));
+		if(e.getSource()==b8)
+			t.setText(t.getText().concat("8"));
+		if(e.getSource()==b9)
+			t.setText(t.getText().concat("9"));
+		if(e.getSource()==b0)
+			t.setText(t.getText().concat("0"));
+		if(e.getSource()==bdec)
+			t.setText(t.getText().concat("."));
+		
+		if(e.getSource()==badd)
+		{
+			a=Double.parseDouble(t.getText());
+			operator=1;
+			t.setText("");
+		}
+		
+		if(e.getSource()==bsub)
+		{
+			a=Double.parseDouble(t.getText());
+			operator=2;
+			t.setText("");
+		}
+
+		if(e.getSource()==bmul)
+		{
+			a=Double.parseDouble(t.getText());
+			operator=3;
+			t.setText("");
+		}
+
+		if(e.getSource()==bdiv)
+		{
+			a=Double.parseDouble(t.getText());
+			operator=4;
+			t.setText("");
+		}
+
+		if(e.getSource()==beq)
+		{
+			b=Double.parseDouble(t.getText());
+			switch(operator)
+			{
+				case 1:result=a+b;
+				       break;
+				case 2:result=a-b;
+				       break;
+				case 3:result=a*b;
+				       break;
+				case 4:result=a/b;
+				       break;
+				default:result=0;
+			}
+			t.setText(""+result);
+		}
+		if(e.getSource()==bclr)
+			t.setText("");
+
+		
+	}
+
+	public static void main(String args[])
+	{
+		new Calculator();
+	}
+
+}
+
+Algorithm:1)Create a class that implements ActionListener.2)Create frame by creating object of JFrame class3)Create buttons and text field using the JButton and JTextField class.4)   Using setBounds methods specify location of the buttons and textField in theframe. 5)  Add the buttons and textfield in the frame using frame class object.6)   In actionPerformed method define actions to be performed when buttons arepressed.7)  If  button pressed  is equal  button perform appropriate function and display results  intextfield.
+========================================================================================================
+
+12  . KeyMouseEventHandler.java
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class KeyMouseEventHandler extends JFrame implements MouseListener,MouseMotionListener,KeyListener
+{
+    String str="";
+    JTextArea t1,t2;
+    Container c;
+    int x,y;
+    public KeyMouseEventHandler()
+    {
+        c=getContentPane();
+        c.setLayout(null);
+        c.setBackground(Color.DARK_GRAY);
+        t1=new JTextArea("Press any Key");
+        t1.setFont(new Font("Times new Roman",Font.BOLD,20));
+        t1.setBounds(200,100,200,50);
+        t2=new JTextArea("\n\n\tClick the mouse or move it!!!",8,25);
+        t2.setFont(new Font("Times new Roman",Font.BOLD,25));
+        t2.setBounds(200,200,600,140);
+        t1.setBackground(Color.BLACK);
+        t2.setBackground(Color.BLACK);
+        t1.setForeground(Color.GREEN);
+        t2.setForeground(Color.ORANGE);
+
+        c.add(t1);
+        c.add(t2);
+
+        t1.addKeyListener(this);
+        t2.addMouseListener(this);
+        t2.addMouseMotionListener(this);
+    }
+    public void keyPressed(KeyEvent ke)
+    {
+        int keycode=ke.getKeyCode();
+        if(keycode==KeyEvent.VK_F1)
+        {
+            str+="F1 Key";
+        }
+        if(keycode==KeyEvent.VK_F2)
+        {
+            str+="F2 Key";
+        }
+        if(keycode==KeyEvent.VK_F3)
+        {
+            str+="F3 Key";
+        }
+        if(keycode==KeyEvent.VK_F4)
+        {
+            str+="F4 Key";
+        }
+        if(keycode==KeyEvent.VK_F5)
+        {
+            str+="F5 Key";
+        }
+        if(keycode==KeyEvent.VK_F6)
+        {
+            str+="F6 Key";
+        }
+        if(keycode==KeyEvent.VK_F7)
+        {
+            str+="F7 Key";
+        }
+        if(keycode==KeyEvent.VK_F8)
+        {
+            str+="F8 Key";
+        }
+        if(keycode==KeyEvent.VK_F9)
+        {
+            str+="F9 Key";
+        }
+        if(keycode==KeyEvent.VK_F10)
+        {
+            str+="F10 Key";
+        }
+        if(keycode==KeyEvent.VK_PAGE_UP)
+        {
+            str+="Page up";
+        }
+        if(keycode==KeyEvent.VK_PAGE_DOWN)
+        {
+            str+="Page Down";
+        }
+        if(keycode==KeyEvent.VK_UP)
+        {
+            str+="Up";
+        }
+        if(keycode==KeyEvent.VK_DOWN)
+        {
+            str+="Down";
+        }
+        if(keycode==KeyEvent.VK_LEFT)
+        {
+            str+="Left";
+        }
+        if(keycode==KeyEvent.VK_RIGHT)
+        {
+            str+="Right";
+        }
+        if(keycode==KeyEvent.VK_TAB)
+        {
+            str+="TAB";
+        }
+        if(keycode==KeyEvent.VK_ENTER)
+        {
+            str+="Enter";
+        }
+        if(keycode==KeyEvent.VK_SHIFT)
+        {
+            str+="Shift";
+        }
+        if(keycode==KeyEvent.VK_INSERT)
+        {
+            str+="Insert";
+        }
+        if(keycode==KeyEvent.VK_DELETE)
+        {
+            str+="Delete";
+        }
+        if(keycode==KeyEvent.VK_ALT)
+        {
+            str+="Alter";
+        }
+        t1.setText(str);
+        str="";
+    }
+    public void keyReleased(KeyEvent ke)
+    {
+        t1.setText("Key Released");
+        str="";
+    }
+    public void keyTyped(KeyEvent ke)
+    {
+        ke.getKeyChar();
+    }
+    public void mouseClicked(MouseEvent me)
+    {
+        int i=me.getButton();
+        if(i==1)
+        {
+            str+="Left Click";
+        }
+        if(i==2)
+        {
+            str+="Middle Click";
+        }
+        if(i==3)
+        {
+            str+="Right Click";
+        }
+        this.display();
+    }
+    public void mouseEntered(MouseEvent me)
+    {
+        str+="Mouse Entered";
+        this.display();
+    }
+    public void mouseExited(MouseEvent me)
+    {
+        str+="Mouse Exited";
+        this.display();
+    }
+    public void mousePressed(MouseEvent me)
+    {
+       x=me.getX();
+       y=me.getY();
+       str+="Mouse Pressed at x:"+x+" ,y:"+y;
+       this.display();
+    }
+    public void mouseReleased(MouseEvent me)
+    {
+       x=me.getX();
+       y=me.getY();
+       str+="Mouse Released at x:"+x+" ,y:"+y;
+       this.display();
+    }
+    public void mouseDragged(MouseEvent me)
+    {
+       x=me.getX();
+       y=me.getY();
+       str+="Mouse Dragged at x:"+x+" ,y:"+y;
+       this.display();
+    }
+    public void mouseMoved(MouseEvent me)
+    {
+       x=me.getX();
+       y=me.getY();
+       str+="Mouse Moved at x:"+x+" ,y:"+y;
+       this.display();
+    }
+    public void display()
+    {   
+        t2.setText("\n\n\t"+str);
+        str="";
+    }
+    public static void main(String args[])
+    {
+        KeyMouseEventHandler kmeh=new KeyMouseEventHandler();
+        kmeh.setSize(1000,1000);
+        kmeh.setVisible(true);
+        kmeh.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+}
+Algorithmfor handling key Events: 1. Create class KeyBoardEvents thatextends JFrameimplemements KeyListenerinterface. 2.Define KeyBoardEvent class constructor to create contentPane & TextArea,3.Addtext area to content pane. Also addkeyListener to text area.4. Define keyPressed,keyReleased and keyTyped methods.5. Create frame anddefine its properties.
+
+Algorithmfor handling mouse Events: 1. Create class MouseEvents that extends JFrame implemements MouseListener,MouseMotionListenerinterface. 2.Define MouseEvent class constructor to create contentPane & TextArea,3.Add text area to content pane. Also add mouseListenerand mouse motion Listenerto text area.4. Define mouseClicked,mouseEntered,mouseExited,mousePressed, mouseReleased,mouseDragged,mouseMoved and display method.5. Create frame and define its properties
+=============================================================================================
+E13:Write a program to Create a Notepad
+
+import javax.swing.*;
+import java.awt.*;
+class notepad extends JFrame
+{
+    JFrame f;
+    JMenuBar mb;
+    JMenu m1,m2,m3,m4,m5;
+    JMenuItem i1,i2,i3,i4,i5,i6,i7,i8,i9,i10;
+    public notepad()
+    {
+        f=new JFrame();
+        f.setLayout(null);
+
+        mb=new JMenuBar();
+        m1=new JMenu("File");
+        m2=new JMenu("Edit");
+        m3=new JMenu("Format");
+        m4=new JMenu("View");
+        m5=new JMenu("Help");
+
+        i1=new JMenuItem("New Ctrl+N");
+        m1.add(i1);
+        i2=new JMenuItem("Open Ctrl+O");
+        m1.add(i2);
+        i3=new JMenuItem("Save Ctr+S");
+        m1.add(i3);
+        i4=new JMenuItem("Save as...");
+        m1.add(i4);
+        i5=new JMenuItem("Page Setup");
+        m1.add(i5);
+        i6=new JMenuItem("Print...");
+        m1.add(i6);
+        i7=new JMenuItem("Exit");
+        m1.add(i7);
+        mb.add(m1);
+        mb.add(m2);
+        mb.add(m3);
+        mb.add(m4);
+        mb.add(m5);
+
+        f.setJMenuBar(mb);
+        f.setSize(500,400);
+        f.setTitle("Notepad");
+        f.setVisible(true);
+        
+    }
+    public static void main(String args[])
+    {
+        new notepad();
+    }
+
+}
+Algorithm: 1. Create a Frame with name MyNotepad 2. Create Menubar 3. Create Menu File, Edit, Format etc. 4. Use the Different Dialog Controls like opendialog, savedialog, fontdailog etc. 
+============================================================================
+E14:Write a Java program that implements a multi-thread application
+
+import java.util.Random;
+class square extends Thread
+{
+    int x;
+    square(int n)
+    {
+        x=n;
+    }
+    public void run()
+    {
+        int sqr=x*x;
+        System.out.println("Square of"+x+"="+sqr);
+    }
+}
+class cube extends Thread
+{
+    int x;
+    cube(int n)
+    {
+        x=n;
+    }  
+    public void run()
+    {
+        int cub=x*x*x;
+        System.out.println("Cube of="+x+"="+cub);
+    }
+}
+class Number extends Thread
+{
+    public void run()
+    {
+
+    
+        Random random=new Random();
+        for(int i=0;i<5;i++)
+        {
+            int randomInteger=random.nextInt(500);
+            System.out.println("Random Integer Generated "+randomInteger);
+            if(randomInteger % 2==0)
+            {
+                square s=new square(randomInteger);
+                s.start();
+            }
+            else
+            {
+                cube c=new cube(randomInteger);
+                c.start();
+            }
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException ex)
+            {
+                System.out.println(ex);
+            }
+        }
+    }
+}
+public class RandomNumberThread
+{
+public static void main(String args[])
+{
+    Number n=new Number();
+    n.start();
+}
+}
+Algorithm:1)Create a class RandomNumberThread that extends Threadclass. 2)In RandomNumberThreadclass  write  run()  methodwhich generatesRandom  Integernumber.3)Create class SquareThreadthat extends Thread class4)In SquareThreadclass write run()method that computes the square of the number.5)Create class CubeThreadthat extends Thread class6)In CubeThreadclass write run()method that computes the cubeof the number7)Run the threadusing start()method of Thread classto show square and cube operations.8)Using the sleep() method assign the timetogenerate random Integernumber.9)Display the output.
+==============================================================================
+E15:Write a program to demonstrate Collection and Generics
+import java.util.*;
+class Book
+{
+	int bookid;
+	String bookname;
+	String auther;
+    String publisher;
+    int quantity;
+	Book(int bookid,String bookname,String auther,String publisher, int quantity)
+	{
+		this.bookid=bookid;
+		this.bookname=bookname;
+		this.auther=auther;
+        this.publisher=publisher;
+        this.quantity=quantity;
+	}
+}
+public class ArrayListDemoObj
+{
+		public static void main(String[]args)
+		{
+			//create user defined objects
+			Book e1=new Book(101,"Shyamchi aai","Sane Guruji","Anand Publishers",1500);
+			Book e2=new Book(102,"Chaava","Shivaji Patil","Pratik Mumbaiwala",25);
+			Book e3=new Book(103,"Harry Potter","Uday Patil","Uday Jaralikar",1);
+			
+			//create arraylist
+			ArrayList<Book> al=new ArrayList<Book>();
+					
+			
+			//add Empolyee class objects
+			al.add(e1);
+			al.add(e2);
+			al.add(e3);
+			for(Book b:al){  
+				System.out.println(b.bookid+" "+b.bookname+" "+b.auther+" "+b.publisher+" "+b.quantity);  
+			}
+			
+                                                  
+			 System.out.println("size:"+al.size());
+             al.remove(e1);
+			 System.out.println("size after removal:"+al.size());
+			 
+			 for(Book b:al){  
+				System.out.println(b.bookid+" "+b.bookname+" "+b.auther+" "+b.publisher+" "+b.quantity);  
+			}
+             
+			 
+
+
+                             
+                                                  
+			
+			}
+            
+		}
+Algorithm: 1. Create a class ArrayListDemo. 2. Using add method insert data into ArrayListi.e. BookID,BookName,Author,Publisher,Quantity.3. Display size of ArrayList.4.Display All elements from ArrayList.5. Remove one element from ArrayList.6. Display elements after removing.

@@ -1,0 +1,1105 @@
+Java Notepad
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.FileDialog;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+public class App implements ActionListener {
+    JFrame window;
+    JTextArea textArea;
+    JScrollPane scrollpane;
+    JMenuBar menuBar;
+    JMenu menuFile, menuEdit, menuFormat, menuColor;
+    JMenuItem fileNew, fileOpen, fileSave, fileSavaAs, fileExit;
+    FunctionFile file = new FunctionFile(this);
+
+    public static void main(String[] args) {
+        new App();
+    }
+
+    App() {
+        createWindow();
+        createTextArea();
+        createMenuBar();
+        window.setVisible(true);
+    }
+
+    public void createWindow() {
+        window = new JFrame("Notepad");
+        window.setSize(600, 400);
+        window.setLocationRelativeTo(null);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    }
+
+    public void createTextArea() {
+        textArea = new JTextArea();
+        scrollpane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollpane.setBorder(BorderFactory.createEmptyBorder());
+        window.add(scrollpane);
+    }
+
+    public void createMenuBar() {
+        menuBar = new JMenuBar();
+        menuFile = new JMenu("File");
+        createFileMenu();
+        menuBar.add(menuFile);
+        menuEdit = new JMenu("Edit");
+        menuBar.add(menuEdit);
+        menuFormat = new JMenu("Format");
+        menuBar.add(menuFormat);
+        menuColor = new JMenu("Color");
+        menuBar.add(menuColor);
+
+        window.setJMenuBar(menuBar);
+    }
+
+    public void createFileMenu() {
+        fileNew = new JMenuItem("New");
+        menuFile.add(fileNew);
+        fileNew.addActionListener(this);
+        fileNew.setActionCommand("New");
+
+        fileOpen = new JMenuItem("Open");
+        menuFile.add(fileOpen);
+        fileOpen.addActionListener(this);
+        fileOpen.setActionCommand("Open");
+
+        fileSave = new JMenuItem("Save");
+        menuFile.add(fileSave);
+        fileSave.addActionListener(this);
+        fileSave.setActionCommand("Save");
+
+        fileSavaAs = new JMenuItem("Save As");
+        menuFile.add(fileSavaAs);
+        fileSavaAs.addActionListener(this);
+        fileSavaAs.setActionCommand("SaveAs");
+
+        fileExit = new JMenuItem("Exit");
+
+        menuFile.add(fileExit);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        switch (command) {
+        case "New":
+            file.newFile();
+            break;
+        case "Open":
+            file.openFile();
+            break;
+        case "Save":
+            file.saveFile();
+            break;
+        case "SaveAs":
+            file.saveAsFile();
+            break;
+
+        }
+
+    }
+}
+class FunctionFile {
+    App app;
+    String fileName;
+    String fileAddress;
+
+    FunctionFile(App app) {
+        this.app = app;
+    }
+
+    public void newFile() {
+        app.textArea.setText("");
+        app.window.setTitle("New");
+        fileAddress = null;
+        fileName = null;
+
+    }
+
+    public void openFile() {
+        FileDialog fd = new FileDialog(app.window, "Open", FileDialog.LOAD);
+        fd.setVisible(true);
+        if (fd.getFile() != null) {
+            fileName = fd.getFile();
+            fileAddress = fd.getDirectory();
+            app.window.setTitle(fileName);
+        }
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileAddress + fileName));
+            app.textArea.setText("");
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                app.textArea.append(line + "\n");
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println("file not opened");
+
+        }
+    }
+
+    public void saveFile() {
+        if (fileName == null) {
+            saveAsFile();
+        } else {
+            try {
+                FileWriter fw = new FileWriter(fileAddress + fileName);
+                fw.write(app.textArea.getText());
+                app.window.setTitle(fileName);
+                fw.close();
+
+            } catch (Exception e) {
+                System.out.println("Something Went Wrong");
+            }
+        }
+    }
+
+    public void saveAsFile() {
+        FileDialog fd = new FileDialog(app.window, "Save", FileDialog.SAVE);
+        fd.setVisible(true);
+        if (fd.getFile() != null) {
+            fileName = fd.getFile();
+            fileAddress = fd.getDirectory();
+            app.window.setTitle(fileName);
+        }
+
+        try {
+            FileWriter fw = new FileWriter(fileAddress + fileName);
+            fw.write(app.textArea.getText());
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("Something Went Wrong");
+        }
+    }
+}
+
+
+
+Java Calculator
+
+import java.awt.Font;
+import javax.swing.*;
+import java.awt.event.*;
+
+public class Calculator {
+    public static void main(String[] args) {
+        new App();
+    }
+}
+
+class App implements ActionListener {
+    JFrame window;
+    JButton button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, button_0,
+            button_add, button_minus, button_multiply, button_divide, button_equal, button_clear, button_00,
+            button_decimal;
+    JTextField textfield;
+    static double a = 0;
+    static double b = 0;
+    static double ans = 0;
+    static int operator = 0;
+
+    App() {
+        createWindow();
+        createTextField();
+        createButton_7();
+        createButton_8();
+        createButton_9();
+        createButton_divide();
+        createButton_4();
+        createButton_5();
+        createButton_6();
+        createButton_multiply();
+        createButton_1();
+        createButton_2();
+        createButton_3();
+        createButton_minus();
+        createButton_0();
+        createButton_00();
+        createButton_decimal();
+        createButton_add();
+        createButton_clear();
+        createButton_equal();
+        window.setVisible(true);
+
+    }
+
+    public void createWindow() {
+        window = new JFrame();
+        window.setSize(400, 370);
+        window.setLocationRelativeTo(null);
+        window.setLayout(null);
+        window.setResizable(false);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void createTextField() {
+        textfield = new JTextField();
+        textfield.setBounds(10, 10, 370, 50);
+        textfield.setFont(new Font("SansSerif", Font.BOLD, 30));
+        window.add(textfield);
+
+    }
+
+    public void createButton_7() {
+        button_7 = new JButton();
+        button_7.setText("7");
+        button_7.setBounds(10, 70, 70, 40);
+        button_7.addActionListener(this);
+        window.add(button_7);
+    }
+
+    public void createButton_8() {
+        button_8 = new JButton();
+        button_8.setText("8");
+        button_8.setBounds(100, 70, 70, 40);
+        button_8.addActionListener(this);
+        window.add(button_8);
+    }
+
+    public void createButton_9() {
+        button_9 = new JButton();
+        button_9.setText("9");
+        button_9.setBounds(190, 70, 70, 40);
+        button_9.addActionListener(this);
+        window.add(button_9);
+    }
+
+    public void createButton_divide() {
+        button_divide = new JButton();
+        button_divide.setText("/");
+        button_divide.setBounds(300, 70, 70, 40);
+        button_divide.addActionListener(this);
+        window.add(button_divide);
+    }
+
+    public void createButton_4() {
+        button_4 = new JButton();
+        button_4.setText("4");
+        button_4.setBounds(10, 120, 70, 40);
+        button_4.addActionListener(this);
+        window.add(button_4);
+    }
+
+    public void createButton_5() {
+        button_5 = new JButton();
+        button_5.setText("5");
+        button_5.setBounds(100, 120, 70, 40);
+        button_5.addActionListener(this);
+        window.add(button_5);
+    }
+
+    public void createButton_6() {
+        button_6 = new JButton();
+        button_6.setText("6");
+        button_6.setBounds(190, 120, 70, 40);
+        button_6.addActionListener(this);
+        window.add(button_6);
+    }
+
+    public void createButton_multiply() {
+        button_multiply = new JButton();
+        button_multiply.setText("*");
+        button_multiply.setBounds(300, 120, 70, 40);
+        button_multiply.addActionListener(this);
+        window.add(button_multiply);
+    }
+
+    public void createButton_1() {
+        button_1 = new JButton();
+        button_1.setText("1");
+        button_1.setBounds(10, 170, 70, 40);
+        button_1.addActionListener(this);
+        window.add(button_1);
+    }
+
+    public void createButton_2() {
+        button_2 = new JButton();
+        button_2.setText("2");
+        button_2.setBounds(100, 170, 70, 40);
+        button_2.addActionListener(this);
+        window.add(button_2);
+    }
+
+    public void createButton_3() {
+        button_3 = new JButton();
+        button_3.setText("3");
+        button_3.setBounds(190, 170, 70, 40);
+        button_3.addActionListener(this);
+        window.add(button_3);
+    }
+
+    public void createButton_minus() {
+        button_minus = new JButton();
+        button_minus.setText("-");
+        button_minus.setBounds(300, 170, 70, 40);
+        button_minus.addActionListener(this);
+        window.add(button_minus);
+    }
+
+    public void createButton_0() {
+        button_0 = new JButton();
+        button_0.setText("0");
+        button_0.setBounds(10, 220, 70, 40);
+        button_0.addActionListener(this);
+        window.add(button_0);
+    }
+
+    public void createButton_00() {
+        button_00 = new JButton();
+        button_00.setText("00");
+        button_00.setBounds(100, 220, 70, 40);
+        button_00.addActionListener(this);
+        window.add(button_00);
+    }
+
+    public void createButton_decimal() {
+        button_decimal = new JButton();
+        button_decimal.setText(".");
+        button_decimal.setBounds(190, 220, 70, 40);
+        button_decimal.addActionListener(this);
+        window.add(button_decimal);
+    }
+
+    public void createButton_add() {
+        button_add = new JButton();
+        button_add.setText("+");
+        button_add.setBounds(300, 220, 70, 90);
+        button_add.addActionListener(this);
+        window.add(button_add);
+    }
+
+    public void createButton_clear() {
+        button_clear = new JButton();
+        button_clear.setText("Clear");
+        button_clear.setBounds(10, 270, 160, 40);
+        button_clear.addActionListener(this);
+        window.add(button_clear);
+    }
+
+    public void createButton_equal() {
+        button_equal = new JButton();
+        button_equal.setText("=");
+        button_equal.setBounds(190, 270, 70, 40);
+        button_equal.addActionListener(this);
+        window.add(button_equal);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == button_0) {
+            textfield.setText(textfield.getText().concat("0"));
+        } else if (e.getSource() == button_1) {
+            textfield.setText(textfield.getText().concat("1"));
+        } else if (e.getSource() == button_2) {
+            textfield.setText(textfield.getText().concat("2"));
+        } else if (e.getSource() == button_3) {
+            textfield.setText(textfield.getText().concat("3"));
+        } else if (e.getSource() == button_4) {
+            textfield.setText(textfield.getText().concat("4"));
+        } else if (e.getSource() == button_5) {
+            textfield.setText(textfield.getText().concat("5"));
+        } else if (e.getSource() == button_6) {
+            textfield.setText(textfield.getText().concat("6"));
+        } else if (e.getSource() == button_7) {
+            textfield.setText(textfield.getText().concat("7"));
+        } else if (e.getSource() == button_8) {
+            textfield.setText(textfield.getText().concat("8"));
+        } else if (e.getSource() == button_9) {
+            textfield.setText(textfield.getText().concat("9"));
+        } else if (e.getSource() == button_decimal) {
+            textfield.setText(textfield.getText().concat("."));
+        } else if (e.getSource() == button_00) {
+            textfield.setText(textfield.getText().concat("00"));
+        }
+
+        if (e.getSource() == button_add) {
+            a = Float.parseFloat(textfield.getText());
+            textfield.setText("");
+            operator = 1;
+        } else if (e.getSource() == button_minus) {
+            a = Float.parseFloat(textfield.getText());
+            textfield.setText("");
+            operator = 2;
+        } else if (e.getSource() == button_multiply) {
+            a = Float.parseFloat(textfield.getText());
+            textfield.setText("");
+            operator = 3;
+        } else if (e.getSource() == button_divide) {
+            a = Float.parseFloat(textfield.getText());
+            textfield.setText("");
+            operator = 4;
+        } else if (e.getSource() == button_equal) {
+
+            switch (operator) {
+            case 1:
+                ans = a + Float.parseFloat(textfield.getText());
+                textfield.setText("" + ans);
+                break;
+            case 2:
+                ans = a - Float.parseFloat(textfield.getText());
+                textfield.setText("" + ans);
+                break;
+            case 3:
+                ans = a * Float.parseFloat(textfield.getText());
+                textfield.setText("" + ans);
+                break;
+            case 4:
+                ans = a / Float.parseFloat(textfield.getText());
+                textfield.setText("" + ans);
+                break;
+            }
+            a = 0;
+            b = 0;
+            ans = 0;
+        } else if (e.getSource() == button_clear) {
+            textfield.setText("");
+            a = 0;
+            b = 0;
+            ans = 0;
+        }
+
+    }
+
+}
+
+
+
+java - ArrayList
+import java.util.*;
+public class ArrayListDemo {
+    public static void main(String[] args){
+        ArrayList<String> a = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Book ID");
+        String bid = sc.next();
+        a.add(bid);
+        System.out.println("Enter Book Name");
+        String book_name = System.console().readLine();
+        a.add(book_name);
+        System.out.println("Enter Book Author");
+        String author = System.console().readLine();
+        a.add(author);
+        System.out.println("Enter Book Publisher");
+        String publisher = System.console().readLine();
+        a.add(publisher);
+        System.out.println("Enter Book Quantity");
+        String quantity = sc.next();
+        a.add(quantity);
+        System.out.println("\nSize of List is: \n"+a.size());
+        System.out.println("List Contains:\n"+a);
+        a.remove(3);
+        System.out.println("After Removing Publisher :\n"+a+"\n");
+    }
+}
+
+
+
+java threading
+import java.util.Random;
+
+
+public class RandomNumberThreading{
+    public static void main(String[] args){
+        RandomNumberThread r = new RandomNumberThread();
+        r.start();
+    }
+}
+class RandomNumberThread extends Thread{
+    public void run(){
+        Random n = new Random();
+        for(int i=0;i<10;i++){
+            int randomInt = n.nextInt(100);
+            System.out.println("Random Integer is "+randomInt);
+            SquareThread  s = new SquareThread(randomInt);
+            s.start();
+            CubeThread c = new CubeThread(randomInt);
+            c.start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("Thread sleeps");
+            }
+        }
+    }
+}
+class SquareThread extends Thread{
+    int num;
+    SquareThread(int n){
+         num = n;
+    }
+    public void run(){
+        System.out.println("Square of "+num+" is "+num*num);
+    }
+}
+class CubeThread extends Thread{
+    int num;
+    CubeThread(int n){
+         num = n;
+    }
+    public void run(){
+        System.out.println("Square of "+num+" is "+num*num*num);
+    }
+}
+
+
+Java action And keyListener
+
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+public class button{
+    public static void main(String[] args){
+        myFrame m = new myFrame();
+    }
+}
+ class myFrame extends JFrame implements ActionListener,KeyListener{
+    private Container c;
+    private JButton b;
+    private JFrame frame;
+    private JLabel res;
+    private JTextArea text;
+    myFrame(){
+        setTitle("Event Lisner");
+        setSize(300,300);
+        setLocation(100,100);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        c = getContentPane();
+        c.setLayout(null);
+        text = new JTextArea();
+        text.setBounds(35,30,150,30);
+        c.add(text);
+        res = new JLabel("Button is unclicked");
+        res.setBounds(50,100,200,30);
+        c.add(res);
+        text.addKeyListener(this);
+        b = new JButton("Click me");
+        b.setBounds(50,70,100,30);
+        c.add(b);
+        b.setOpaque(true);
+        b.addMouseListener(new MouseAdapter(){
+            public void mouseEntered(MouseEvent e){
+                res.setText("Mouse is on button");
+            }
+            public void mouseExited(MouseEvent e){
+                res.setText("Mouse is not on button");
+            }
+        });
+        b.addActionListener(this);
+        setVisible(true);
+    }
+    public void keyPressed(KeyEvent e){
+        res.setText("Key is pressed");
+    }
+    public void keyReleased(KeyEvent e){
+        res.setText("Key is released");
+    }
+    public void keyTyped(KeyEvent e){
+        res.setText("Key is typed");
+    }
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource()==b){
+            res.setText("Button is clicked");
+        }
+    }
+}
+
+
+java File Handling students details
+
+import java.io.*;
+import java.util.Scanner;
+
+public class StudentInfo {
+    public static void main(String[] args) throws IOException {
+        int RollNo;
+        long mob;
+        String name, clas, email;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter name");
+        name = sc.nextLine();
+        System.out.println("Enter RollNo");
+        RollNo = sc.nextInt();
+        System.out.println("Enter Class");
+        clas = sc.next();
+        System.out.println("Enter MobNo");
+        mob = sc.nextLong();
+        System.out.println("Enter email");
+        email = sc.next();
+        try (FileOutputStream fos = new FileOutputStream("studfile.txt");
+                DataOutputStream dos = new DataOutputStream(fos)) {
+            dos.writeInt(RollNo);
+            dos.writeUTF(name);
+            dos.writeUTF(clas);
+            dos.writeLong(mob);
+            dos.writeUTF(email);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (FileInputStream fis = new FileInputStream("studfile.txt");
+                DataInputStream dis = new DataInputStream(fis)) {
+            System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            System.out.println("\nRoll No : " + dis.readInt());
+            System.out.println("Name : " + dis.readUTF());
+            System.out.println("Class : " + dis.readUTF());
+            System.out.println("Mob No : " + dis.readLong());
+            System.out.println("E-mail : " + dis.readUTF());
+            System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+}
+
+
+
+Java FileHandling
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class ReadFile {
+    public static void main(String[] args) {
+        System.out.println("enter choice\n");
+        System.out.println("1.Read Contents from file\n2.Write in file");
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        if(n>0 && n<3){
+            switch (n) {
+                case 1:
+                    try {
+                        System.out.println("Enter file Name");
+                        String fileName = sc.next();
+                        FileInputStream myFile =  new FileInputStream(fileName);
+                        Scanner scc = new Scanner(myFile);
+                            while(scc.hasNextLine()){
+                                String s = scc.nextLine();
+                                System.out.println(s);
+                            }
+                        scc.close();
+                    } catch (FileNotFoundException e) {
+                        System.out.println("Error while Reading file");
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    try {
+                        System.out.println("Enter file Name");
+                        String myFile = sc.next();
+                        FileOutputStream fileName = new FileOutputStream(myFile);
+                        
+                        try {
+                            sc.nextLine();
+                            System.out.println("enter content");
+                            String str = sc.nextLine();
+                            fileName.write(str.getBytes());
+                            System.out.println("content entered succesfully");
+                            sc.close();
+                        } catch (IOException e) {
+                            System.out.println("file does not found");
+                            e.printStackTrace();
+                        }
+                    } catch (FileNotFoundException e) {
+                        System.out.println("Error while Adding Content");
+                        e.printStackTrace();
+                    }
+                default:
+                    break;
+            }
+        }
+    }
+
+}
+
+
+
+
+
+java Operation OwnException
+
+public class operation{
+    
+     static void addition(int a,int b) throws MyException {
+        System.out.println("\nIn Addition...");
+        int add = a + b ;
+        if(add > 1000){
+            throw new MyException(" Too long addition Exception Occurs");
+        }
+        else{
+            System.out.println("Addition is "+ add);
+        }
+    }
+    static void subtraction(int a,int b) throws MyException {
+        System.out.println("\nIn Subtraction...");
+        int sub = a - b ;
+        if(sub < 0){
+            throw new MyException(" NegativeAnswer Exception Occurs");
+        }
+        else{
+            System.out.println("Subtraction is "+ sub);
+        }
+    }
+    static void multiplication(int a,int b) throws MyException {
+        System.out.println("\nIn Multiplication...");
+        int mul = a * b ;
+        if(mul > 5000){
+            throw new MyException(" TooLongMultiplication exception Occurs");
+        }
+        else{
+            System.out.println("Subtraction is "+ mul);
+        }
+    }
+    static void division(int a,int b) throws MyException {
+        System.out.println("\nIn Division...");
+        
+        if(b == 0){
+            throw new MyException(" Divide by 0 exception Occurs");
+        }
+        else{
+            int div = a / b ;
+            System.out.println("Subtraction is "+ div);
+        }
+    }
+    public static void main(String[] args) {
+        try {
+            addition(1000,200);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        try {
+            subtraction(50, 100);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        try {
+            multiplication(2500, 3);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        try {
+            division(10, 0);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+ class MyException extends Exception{
+    public MyException(String msg){
+        super(msg);
+    } 
+}
+
+
+
+
+java - package
+import MyMath.*;
+import java.util.*;
+public class PackDemo{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        Trig n = new Trig(45);
+        System.out.println("Sine  "+n.getSine());
+        System.out.println("Cosine  "+n.getCoSine());
+        System.out.println("Tangent  "+n.getTangent());
+        System.out.println("Cotangent  "+n.getCotangent());
+        System.out.println("Cosecant  "+n.getCosecant());
+        System.out.println("Secant  "+n.getSecant());
+        Arithmetic ar = new Arithmetic(37,5);
+        System.out.println("\nAddition  "+ar.getAddition());
+        System.out.println("Subtraction  "+ar.getSubtraction());
+        System.out.println("Multiplication  "+ar.getMultiplication());
+        System.out.println("Division  "+ar.getDivision());
+        int a[] = {23,52,30,14,45};
+        Stat s = new Stat(a);
+        
+        System.out.println("\nMinimum no "+s.min_no());
+        System.out.println("Maximum no "+s.max_no());
+        System.out.println("Count "+s.count());
+        System.out.println("Sum "+s.sum());
+        System.out.println("Average "+s.average());
+    }
+}
+
+package MyMath;
+public class Arithmetic{
+    float a;
+    float b;
+    public Arithmetic(float a,float b){
+        this.a=a;
+        this.b=b;
+    }
+    public float getAddition(){
+        return a+b;
+    }
+    public float getSubtraction(){
+        return a-b;
+    }
+    public float getMultiplication(){
+        return a*b;
+    }
+    public float getDivision(){
+        return a/b;
+    }
+}
+
+
+package MyMath;
+public class Stat{
+    int[] a;
+    public Stat(int[] a){
+        this.a = a;
+    }
+    public int min_no(){
+        int i,min=a[0];
+        for(i=0;i<a.length;i++){
+           min = (a[i]<min)?a[i]:min;
+        }
+        return min;
+    }
+    public int max_no(){
+        int i,max=a[0];
+        for(i=0;i<a.length;i++){
+           max = (a[i]>max)?a[i]:max;
+        }
+        return max;
+    }
+    public int count(){
+        return a.length;
+    }
+    public int sum(){
+        int i,s=0;
+        for(i=0;i<a.length;i++){
+           s+=a[i];
+        }
+        return s;
+    }
+    public float average(){
+        return (sum()/count());
+    }
+}
+
+
+package MyMath;
+public class Trig{
+    double angle;
+    public Trig(double ang){
+        angle = Math.toRadians(ang);
+    }
+    public double getSine(){
+        double a = Math.sin(angle);
+        return a;
+    }
+    public double getCoSine(){
+        double a = Math.cos(angle);
+        return a;
+    }
+    public double getTangent(){
+        double a = Math.tan(angle);
+        return a;
+    }
+    public double getCotangent(){
+        double a = 1/Math.tan(angle);
+        return a;
+    }
+    public double getCosecant(){
+        double a = 1/Math.sin(angle);
+        return a;
+    }
+    public double getSecant(){
+        double a = 1/Math.cos(angle);
+        return a;
+    }
+}
+
+
+Java-StackQueue
+
+import java.util.*;
+public class StackQueueTest {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int p;
+        System.out.println("1.Stack");
+        System.out.println("2.Queue");
+        System.out.println("Enter your preference");
+        p = sc.nextInt();
+        char c;
+        
+        switch (p) {
+            case 1: 
+                System.out.println("Enter required size for Stack");
+                int size = sc.nextInt();
+                StackQueue s1 = new StackQueue(size);
+                System.out.println("How many ele do you want to push");
+                        int n = sc.nextInt();
+                        System.out.println("Enter data");
+                        for(int i=0;i<n;i++){
+                        int data = sc.nextInt();
+                        s1.push(data);
+                        }
+                        System.out.println("Current Stack");
+                        s1.print();
+                do{
+                System.out.println("\na.push data");
+                System.out.println("b.pop data");
+                System.out.println("c.Get peak\n");
+                System.out.println("Enter key of the operation which you want to perform?");
+                char ch = sc.next().charAt(0);
+                
+                switch (ch) {
+                    case 'a':
+                        System.out.println("Enter data");
+                        int nData = sc.nextInt();
+                        s1.push(nData);
+                        System.out.println("Current Stack");
+                        s1.print();
+                        break;
+                    case 'b':
+                        s1.pop();
+                        s1.print();
+                        break;
+                    case 'c':
+                        System.out.println("Currently top element is "+s1.top());
+                        break;
+                    default:
+                        System.out.println("Enter valid input\n");
+                        break;
+                }
+                System.out.println("\nFor continue please enter 'y' or 'Y'");
+                c = sc.next().charAt(0);
+              }while(c=='y'||c=='Y');
+                break;
+            
+            case 2:
+            System.out.println("Enter required size for Queue");
+            int siz = sc.nextInt();
+            StackQueue s2 = new StackQueue(siz);
+            System.out.println("How many ele do you want to enqueu");
+                    int m = sc.nextInt();
+                    System.out.println("Enter data");
+                    for(int i=0;i<m;i++){
+                    int data = sc.nextInt();
+                    s2.enqueu(data);
+                    }
+            do{
+            System.out.println("\na.enqueu data");
+            System.out.println("b.dequeu data");
+            System.out.println("Enter key of the operation which you want to perform?");
+            char ch1 = sc.next().charAt(0);
+            
+            switch (ch1) {
+                case 'a':
+                    System.out.println("Enter data");
+                    int nData = sc.nextInt();
+                    s2.push(nData);
+                    System.out.println("Current Queue");
+                    s2.print();
+                    break;
+                case 'b':
+                    s2.dequeue(); 
+                    s2.print();
+                    break;
+                default:
+                    System.out.println("Enter valid input\n");
+                    break;
+            }
+            System.out.println("\nFor continue please enter 'y' or 'Y'\n");
+            c = sc.next().charAt(0);
+        }while(c=='y'||c=='Y');
+            default:
+                System.out.println("Enter correct preference");
+                break;
+        }
+        
+    }
+    
+}
+interface StackInterface {
+    void push(int data);
+    void pop();
+    int top();
+}
+interface QueueInterface {
+    void enqueu(int data);
+    void dequeue();
+}
+class StackQueue implements StackInterface, QueueInterface {
+    int st[];
+    int c;
+    int f;
+    StackQueue(int size){
+        st = new int [size];
+        c = -1;
+        f = 0;
+   }
+    public void print() {
+        int i = f;
+        for(i=f;i<=c;i++){
+            System.out.print(st[i]+" ");
+        }
+    }
+    @Override
+    public void push(int data) {
+        if(c==st.length-1){
+            System.out.print("\nStack overflow");
+            return;
+        }
+        else{
+            st[++c] = data;
+        }
+    }
+
+    @Override
+    public void pop() {
+       if(c<0){
+           System.out.print("\nStack underflow");
+           return;
+       }
+       else{
+           c--;
+       }
+        
+    }
+    @Override
+    public int top() {
+        if(c<0){
+            return 0;
+        }
+        return st[c];
+    }
+    @Override
+    public void enqueu(int data) {
+        if(c==st.length-1){
+            System.out.print("\nQueue overflow");
+            return;
+        }
+        else{
+            st[++c] = data;
+        }
+    }
+    @Override
+    public void dequeue() {
+        if(f>st.length){
+            System.out.print("\nQueue underflow");
+        }
+        else{
+            f++;
+        }
+    }
+        
+}
+
+
+
